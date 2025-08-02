@@ -17,9 +17,8 @@
 }
 
 body {
-    font-family:
-        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-        Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
     background-color: var(--background-light);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
@@ -221,9 +220,8 @@ select {
     border: 1px solid var(--border-light);
     background-color: var(--background-light);
     font-size: 1rem;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 input:focus,
@@ -274,9 +272,8 @@ select {
     text-decoration: none;
     background-color: var(--paypal-blue);
     color: white;
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+    transition: background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .cta-button:hover {
@@ -366,9 +363,8 @@ select {
     color: var(--paypal-blue);
     cursor: pointer;
     font-weight: 500;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+    transition: background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .button-invoice:hover {
@@ -461,9 +457,8 @@ select {
     box-shadow: 0 8px 24px rgba(44, 47, 51, 0.08);
     position: relative;
     overflow: hidden;
-    transition:
-        transform 0.2s ease-out,
-        box-shadow 0.2s ease-out;
+    transition: transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
 }
 
 .ticket-card:hover {
@@ -708,9 +703,8 @@ select {
     cursor: pointer;
     color: white;
     font-weight: 500;
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+    transition: background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .toast-button:hover {
@@ -748,24 +742,30 @@ textarea:-webkit-autofill {
     margin-left: 1.5rem;
 }
 
-.password-rules {
-    margin-top: 10px;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    color: #495057;
+.password-rules-notice {
+    background-color: var(--surface-white);
+    border-left: 4px solid var(--paypal-blue);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
 }
 
-.password-rules p {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-weight: 600;
+.password-rules-notice strong {
+    color: var(--text-primary);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
-.password-rules ul {
-    margin: 0;
-    padding-left: 18px;
-    line-height: 1.6;
+.password-rules-notice ul {
+    list-style: disc;
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.password-rules-notice li {
+    margin-bottom: 0.25rem;
 }
