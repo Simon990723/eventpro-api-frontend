@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             }
             setUser({ email: decoded.email, roles: roles || [], token });
         } catch (error) {
-            console.error('Failed to decode token:', error);
+            //console.error('Failed to decode token:', error);
             setUser(null);
             localStorage.removeItem('authToken');
         }

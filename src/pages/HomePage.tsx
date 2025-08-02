@@ -68,6 +68,7 @@ const HomePage: FC = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         if (!isAuthLoading) {
             if (user) {
@@ -96,7 +97,11 @@ const HomePage: FC = () => {
             toast.error('Please fill in all fields, including price.');
             return;
         }
-        if (!user || !user.token) return;
+        if (!user || !user.token) {
+            toast.error('Authentication error. Please log in again.');
+            return;
+        }
+
         const url = editingEventId
             ? `${API_BASE_URL}/api/events/${editingEventId}`
             : `${API_BASE_URL}/api/events`;
@@ -111,6 +116,7 @@ const HomePage: FC = () => {
         const successMessage = editingEventId
             ? 'Event updated!'
             : 'Event created!';
+
         await toast.promise(
             fetch(url, {
                 method: method,
@@ -235,11 +241,7 @@ const HomePage: FC = () => {
             );
             if (!response.ok) {
                 const errorText = await response.text();
-                toast.error(
-                    `AI Assistant Error: ${errorText || 'The AI assistant did not respond correctly.'}`,
-                    { id: loadingToastId }
-                );
-                return;
+                throw new Error(errorText || 'The AI assistant did not respond correctly.');
             }
             const aiData = await response.json();
             const formattedDate = aiData.date
@@ -267,36 +269,15 @@ const HomePage: FC = () => {
         return (
             <main className="main-content-grid fade-in">
                 <div className="page-section">
-                    <Skeleton
-                        className="h2-skeleton"
-                        style={{ marginBottom: '0.5rem' }}
-                    />
-                    <Skeleton
-                        className="p-skeleton"
-                        style={{ marginBottom: '2rem' }}
-                    />
-                    <Skeleton
-                        className="list-item-skeleton"
-                        style={{ marginBottom: '1rem', height: '40px' }}
-                    />
-                    <Skeleton
-                        className="list-item-skeleton"
-                        style={{ marginBottom: '1rem', height: '40px' }}
-                    />
-                    <Skeleton
-                        className="list-item-skeleton"
-                        style={{ height: '45px', borderRadius: '25px' }}
-                    />
+                    <Skeleton className="h2-skeleton" style={{ marginBottom: '0.5rem' }} />
+                    <Skeleton className="p-skeleton" style={{ marginBottom: '2rem' }} />
+                    <Skeleton className="list-item-skeleton" style={{ marginBottom: '1rem', height: '40px' }} />
+                    <Skeleton className="list-item-skeleton" style={{ marginBottom: '1rem', height: '40px' }} />
+                    <Skeleton className="list-item-skeleton" style={{ height: '45px', borderRadius: '25px' }} />
                 </div>
                 <div className="page-section">
-                    <Skeleton
-                        className="h2-skeleton"
-                        style={{ marginBottom: '0.5rem' }}
-                    />
-                    <Skeleton
-                        className="p-skeleton"
-                        style={{ marginBottom: '2rem' }}
-                    />
+                    <Skeleton className="h2-skeleton" style={{ marginBottom: '0.5rem' }} />
+                    <Skeleton className="p-skeleton" style={{ marginBottom: '2rem' }} />
                     <Skeleton className="attendee-item-skeleton" />
                     <Skeleton className="attendee-item-skeleton" />
                 </div>
@@ -307,87 +288,65 @@ const HomePage: FC = () => {
     return (
         <>
             {isCreator ? (
-                <>
-                    <main className="main-content-grid fade-in">
-                        <section ref={formSectionRef} className="page-section">
-                            <div className="section-header">
-                                <h2>
-                                    {editingEventId
-                                        ? 'Edit Event'
-                                        : 'Create an Event'}
-                                </h2>
-                                <p>
-                                    Fill in the details below or use our AI
-                                    assistant to get started.
-                                </p>
-                            </div>
-                            <EventForm
-                                formData={formData}
-                                editingEventId={editingEventId}
-                                handleInputChange={handleInputChange}
-                                handleFormSubmit={handleFormSubmit}
-                                handleCancelEdit={handleCancelEdit}
-                                aiPrompt={aiPrompt}
-                                setAiPrompt={setAiPrompt}
-                                handleGenerateWithAi={handleGenerateWithAi}
-                                isGenerating={isGenerating}
-                            />
-                        </section>
+                <main className="main-content-grid fade-in">
+                    <section ref={formSectionRef} className="page-section">
+                        <div className="section-header">
+                            <h2>{editingEventId ? 'Edit Event' : 'Create an Event'}</h2>
+                            <p>Fill in the details below or use our AI assistant to get started.</p>
+                        </div>
+                        <EventForm
+                            formData={formData}
+                            editingEventId={editingEventId}
+                            handleInputChange={handleInputChange}
+                            handleFormSubmit={handleFormSubmit}
+                            handleCancelEdit={handleCancelEdit}
+                            aiPrompt={aiPrompt}
+                            setAiPrompt={setAiPrompt}
+                            handleGenerateWithAi={handleGenerateWithAi}
+                            isGenerating={isGenerating}
+                        />
+                    </section>
+                    <section className="page-section">
+                        <div className="section-header">
+                            <h2>Your Upcoming Events</h2>
+                            <p>A list of all events you have created. You can manage them from here.</p>
+                        </div>
+                        <EventList
+                            events={events}
+                            loading={loading}
+                            error={null}
+                            handleEditClick={handleEditClick}
+                            handleDeleteEvent={handleDeleteEvent}
+                            isCreator={isCreator}
+                        />
+                    </section>
+                </main>
+            ) : (
+                <main className="main-content-grid fade-in">
+                    <div className="user-event-browser">
                         <section className="page-section">
                             <div className="section-header">
-                                <h2>Your Upcoming Events</h2>
-                                <p>
-                                    A list of all events you have created. You
-                                    can manage them from here.
-                                </p>
+                                <h2>🗓️ Upcoming Events</h2>
+                                <p>Find an event that interests you and click "Manage" to see details and register.</p>
                             </div>
                             <EventList
                                 events={events}
                                 loading={loading}
                                 error={null}
-                                handleEditClick={handleEditClick}
-                                handleDeleteEvent={handleDeleteEvent}
                                 isCreator={isCreator}
+                                handleEditClick={() => {}}
+                                handleDeleteEvent={() => {}}
                             />
                         </section>
-                    </main>
-                </>
-            ) : (
-                <>
-                    <main className="main-content-grid fade-in">
-                        <div className="user-event-browser">
-                            <section className="page-section">
-                                <div className="section-header">
-                                    <h2>🗓️ Upcoming Events</h2>
-                                    <p>
-                                        Find an event that interests you and
-                                        click "Manage" to see details and
-                                        register.
-                                    </p>
-                                </div>
-                                <EventList
-                                    events={events}
-                                    loading={loading}
-                                    error={null}
-                                    isCreator={isCreator}
-                                    handleEditClick={() => {}}
-                                    handleDeleteEvent={() => {}}
-                                />
-                            </section>
+                    </div>
+                    <section className="page-section page-section--sidebar">
+                        <div className="section-header">
+                            <h2>🎟️ My Registrations</h2>
+                            <p>A list of all events you are registered to attend.</p>
                         </div>
-
-                        <section className="page-section page-section--sidebar">
-                            <div className="section-header">
-                                <h2>🎟️ My Registrations</h2>
-                                <p>
-                                    A list of all events you are registered to
-                                    attend.
-                                </p>
-                            </div>
-                            <MyRegistrationsList />
-                        </section>
-                    </main>
-                </>
+                        <MyRegistrationsList />
+                    </section>
+                </main>
             )}
         </>
     );
