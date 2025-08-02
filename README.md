@@ -6,6 +6,21 @@ A modern, responsive frontend for a full-stack event management platform, built 
 
 ---
 
+## Demo & Test Accounts 🧪
+
+You can test the application's different user roles with the following accounts.
+
+**Password for all accounts**: `Password123!`
+
+| Role                      | Email                  |
+| :------------------------ | :--------------------- |
+| **Event Creator** | `creator1@example.com` |
+| **Normal User (Attendee)**| `user1@example.com`    |
+
+*(Additional test accounts such as `creator2@example.com`, `user2@example.com`, etc., are also available.)*
+
+---
+
 ## Key Features
 
 - **User Authentication**: Secure registration and login for event creators and users.
@@ -21,7 +36,7 @@ A modern, responsive frontend for a full-stack event management platform, built 
 - **Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
 - **Styling**: CSS Modules / PostCSS
-- **State Management**: React Context / Zustand _(adjust as needed)_
+- **State Management**: React Context / Zustand *(adjust as needed)*
 - **Routing**: React Router
 - **API Communication**: Fetch API / Axios
 
