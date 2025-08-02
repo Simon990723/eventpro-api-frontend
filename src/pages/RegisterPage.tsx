@@ -71,14 +71,6 @@ const RegisterPage: React.FC = () => {
 
     return (
         <div className="auth-container fade-in">
-            <h2 className="form-title">Create an Account</h2>
-            <p className="password-rules-notice">
-                **Password Requirements:**
-                <br/>
-                Your password must be at least 8 characters long and contain at
-                least one uppercase letter, one lowercase letter, one number,
-                and one special character.
-            </p>
             <AuthForm
                 formType="register"
                 onSubmit={handleRegister}

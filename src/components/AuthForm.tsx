@@ -1,5 +1,5 @@
-﻿import React, { useState, type FormEvent } from 'react';
-import { Oval } from 'react-loader-spinner';
+﻿import React, {useState, type FormEvent} from 'react';
+import {Oval} from 'react-loader-spinner';
 
 interface AuthFormProps {
     formType: 'login' | 'register';
@@ -8,10 +8,10 @@ interface AuthFormProps {
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
-    formType,
-    onSubmit,
-    isLoading,
-}) => {
+                                               formType,
+                                               onSubmit,
+                                               isLoading,
+                                           }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('User');
@@ -27,7 +27,18 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
     return (
         <div className="auth-form-container">
-            <h2>{formType === 'login' ? 'Login' : 'Create an Account'}</h2>
+            <h2 className="form-title">
+                {formType === 'login' ? 'Login' : 'Create an Account'}
+            </h2>
+            {formType === 'register' && (
+                <p className="password-rules-notice">
+                    <strong>Password Requirements:</strong>
+                    <br/>
+                    Your password must be at least 8 characters long and contain at
+                    least one uppercase letter, one lowercase letter, one number,
+                    and one special character.
+                </p>
+            )}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
@@ -63,14 +74,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
                             id="role"
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                borderRadius: '8px',
-                                border: '1px solid var(--border-color)',
-                                backgroundColor: 'var(--background-color)',
-                                color: 'var(--text-color)',
-                            }}
                         >
                             <option value="User">Normal User (Attendee)</option>
                             <option value="Creator">Event Creator</option>
@@ -80,9 +83,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
                 <button
                     type="submit"
-                    className="submit-button"
+                    className="submit-button cta-button"
                     disabled={isLoading}
-                    style={{ marginTop: '1rem' }}
+                    style={{marginTop: '1rem'}}
                 >
                     {isLoading ? (
                         <Oval
