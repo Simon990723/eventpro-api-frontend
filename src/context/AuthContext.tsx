@@ -32,8 +32,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-    children,
-}) => {
+                                                                    children,
+                                                                }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -43,13 +43,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             let roles =
                 decoded[
                     'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-                ];
+                    ];
             if (typeof roles === 'string') {
                 roles = [roles];
             }
             setUser({ email: decoded.email, roles: roles || [], token });
         } catch (error) {
-            //console.error('Failed to decode token:', error);
             setUser(null);
             localStorage.removeItem('authToken');
         }
@@ -83,7 +82,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             logout,
             isLoading,
         }),
-        [user, isLoading, login, logout]
+        [user, isLoading] 
     );
 
     return (
