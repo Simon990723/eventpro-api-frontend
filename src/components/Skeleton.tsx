@@ -6,7 +6,7 @@ interface SkeletonProps {
     style?: React.CSSProperties;
 }
 
-const Skeleton: React.FC<SkeletonProps> = ({className = '', style}) => {
+const Skeleton: React.FC<SkeletonProps> = ({ className = '', style }) => {
     return <div className={`skeleton ${className}`} style={style}></div>;
 };
 

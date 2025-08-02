@@ -1,5 +1,5 @@
-﻿import React, {useState, type FormEvent} from 'react';
-import {Oval} from 'react-loader-spinner';
+﻿import React, { useState, type FormEvent } from 'react';
+import { Oval } from 'react-loader-spinner';
 
 interface AuthFormProps {
     formType: 'login' | 'register';
@@ -7,7 +7,11 @@ interface AuthFormProps {
     isLoading: boolean;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({formType, onSubmit, isLoading}) => {
+const AuthForm: React.FC<AuthFormProps> = ({
+    formType,
+    onSubmit,
+    isLoading,
+}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('User');
@@ -27,13 +31,29 @@ const AuthForm: React.FC<AuthFormProps> = ({formType, onSubmit, isLoading}) => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-                           autoComplete="email"/>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        autoComplete="email"
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                           required autoComplete={formType === 'login' ? 'current-password' : 'new-password'}/>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        autoComplete={
+                            formType === 'login'
+                                ? 'current-password'
+                                : 'new-password'
+                        }
+                    />
                 </div>
 
                 {formType === 'register' && (
@@ -49,7 +69,7 @@ const AuthForm: React.FC<AuthFormProps> = ({formType, onSubmit, isLoading}) => {
                                 borderRadius: '8px',
                                 border: '1px solid var(--border-color)',
                                 backgroundColor: 'var(--background-color)',
-                                color: 'var(--text-color)'
+                                color: 'var(--text-color)',
                             }}
                         >
                             <option value="User">Normal User (Attendee)</option>
@@ -58,11 +78,24 @@ const AuthForm: React.FC<AuthFormProps> = ({formType, onSubmit, isLoading}) => {
                     </div>
                 )}
 
-                <button type="submit" className="submit-button" disabled={isLoading} style={{marginTop: '1rem'}}>
+                <button
+                    type="submit"
+                    className="submit-button"
+                    disabled={isLoading}
+                    style={{ marginTop: '1rem' }}
+                >
                     {isLoading ? (
-                        <Oval height={20} width={20} color="#ffffff" secondaryColor="#eeeeee" strokeWidth={4}/>
+                        <Oval
+                            height={20}
+                            width={20}
+                            color="#ffffff"
+                            secondaryColor="#eeeeee"
+                            strokeWidth={4}
+                        />
+                    ) : formType === 'login' ? (
+                        'Login'
                     ) : (
-                        formType === 'login' ? 'Login' : 'Register'
+                        'Register'
                     )}
                 </button>
             </form>

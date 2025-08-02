@@ -1,10 +1,17 @@
-﻿import {type FC, type FormEvent, type ChangeEvent} from 'react';
-import {Oval} from 'react-loader-spinner';
+﻿import { type FC, type FormEvent, type ChangeEvent } from 'react';
+import { Oval } from 'react-loader-spinner';
 
 interface EventFormProps {
-    formData: { name: string; date: string; location: string; price: number | string; };
+    formData: {
+        name: string;
+        date: string;
+        location: string;
+        price: number | string;
+    };
     editingEventId: number | null;
-    handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleInputChange: (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
     handleFormSubmit: (e: FormEvent) => void;
     handleCancelEdit: () => void;
     aiPrompt: string;
@@ -14,21 +21,23 @@ interface EventFormProps {
 }
 
 const EventForm: FC<EventFormProps> = ({
-                                           formData,
-                                           editingEventId,
-                                           handleInputChange,
-                                           handleFormSubmit,
-                                           handleCancelEdit,
-                                           aiPrompt,
-                                           setAiPrompt,
-                                           handleGenerateWithAi,
-                                           isGenerating
-                                       }) => {
+    formData,
+    editingEventId,
+    handleInputChange,
+    handleFormSubmit,
+    handleCancelEdit,
+    aiPrompt,
+    setAiPrompt,
+    handleGenerateWithAi,
+    isGenerating,
+}) => {
     return (
         <form onSubmit={handleFormSubmit} className="event-form">
             <div className="ai-feature-box">
                 <label htmlFor="ai-prompt">✨ AI Event Assistant</label>
-                <p className="form-group-description">Describe your event idea, and let AI fill in the details!</p>
+                <p className="form-group-description">
+                    Describe your event idea, and let AI fill in the details!
+                </p>
                 <textarea
                     id="ai-prompt"
                     placeholder="e.g., A large tech conference in Singapore"
@@ -43,14 +52,20 @@ const EventForm: FC<EventFormProps> = ({
                     className="button-ai"
                 >
                     {isGenerating ? (
-                        <Oval height={20} width={20} color="#ffffff" secondaryColor="#eeeeee" strokeWidth={4}/>
+                        <Oval
+                            height={20}
+                            width={20}
+                            color="#ffffff"
+                            secondaryColor="#eeeeee"
+                            strokeWidth={4}
+                        />
                     ) : (
                         'Generate with AI'
                     )}
                 </button>
             </div>
 
-            <hr className="form-divider"/>
+            <hr className="form-divider" />
 
             <div className="form-group">
                 <label htmlFor="name">Event Name</label>
@@ -102,7 +117,11 @@ const EventForm: FC<EventFormProps> = ({
 
             <div className="form-actions">
                 {editingEventId && (
-                    <button type="button" onClick={handleCancelEdit} className="button-secondary">
+                    <button
+                        type="button"
+                        onClick={handleCancelEdit}
+                        className="button-secondary"
+                    >
                         Cancel
                     </button>
                 )}

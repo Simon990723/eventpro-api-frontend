@@ -6,10 +6,12 @@ const MyRegistrationsPage: React.FC = () => {
         <div className="my-registrations-container fade-in">
             <header className="detail-page-header">
                 <h1>My Registrations</h1>
-                <p className="event-subtitle">Your personal event pass collection.</p>
+                <p className="event-subtitle">
+                    Your personal event pass collection.
+                </p>
             </header>
 
-            <MyRegistrationsList/>
+            <MyRegistrationsList />
         </div>
     );
 };

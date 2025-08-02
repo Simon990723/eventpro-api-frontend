@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {useAuth} from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const Navbar: React.FC = () => {
-    const {user, logout} = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const isCreator = user?.roles.includes('Creator');
 
@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
         <nav className="navbar">
             <div className="navbar-left">
                 <Link to="/" className="navbar-brand">
-                    <img src="/logo.png" alt="EventPro Platform Logo"/>
+                    <img src="/logo.png" alt="EventPro Platform Logo" />
                     <span>EventPro Platform</span>
                 </Link>
                 {user && (
@@ -35,7 +35,12 @@ const Navbar: React.FC = () => {
                 {user ? (
                     <>
                         <span className="welcome-text">{user.email}</span>
-                        <button onClick={handleLogout} className="logout-button">Logout</button>
+                        <button
+                            onClick={handleLogout}
+                            className="logout-button"
+                        >
+                            Logout
+                        </button>
                     </>
                 ) : (
                     <div className="navbar-links">

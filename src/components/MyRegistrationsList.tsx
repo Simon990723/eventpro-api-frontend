@@ -1,8 +1,8 @@
-﻿import React, {useState, useEffect} from 'react';
-import {useAuth} from '../context/AuthContext';
+﻿import React, { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import Skeleton from './Skeleton';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface Registration {
     id: number;
@@ -23,7 +23,7 @@ const API_BASE_URL = 'http://localhost:5189';
 const MyRegistrationsList: React.FC = () => {
     const [registrations, setRegistrations] = useState<Registration[]>([]);
     const [loading, setLoading] = useState(true);
-    const {user} = useAuth();
+    const { user } = useAuth();
 
     useEffect(() => {
         if (!user?.token) {
@@ -34,9 +34,12 @@ const MyRegistrationsList: React.FC = () => {
         const fetchMyRegistrations = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${API_BASE_URL}/api/registrants/me`, {
-                    headers: {'Authorization': `Bearer ${user.token}`}
-                });
+                const response = await fetch(
+                    `${API_BASE_URL}/api/registrants/me`,
+                    {
+                        headers: { Authorization: `Bearer ${user.token}` },
+                    }
+                );
                 if (!response.ok) {
                     throw new Error('Could not fetch your registrations.');
                 }
@@ -55,12 +58,15 @@ const MyRegistrationsList: React.FC = () => {
     const handleDownloadInvoice = async (invoiceId: number) => {
         if (!user?.token) return;
 
-        const loadingToast = toast.loading("Generating your receipt...");
+        const loadingToast = toast.loading('Generating your receipt...');
         try {
-            const response = await fetch(`${API_BASE_URL}/api/invoice/${invoiceId}`, {
-                headers: {'Authorization': `Bearer ${user.token}`}
-            });
-            if (!response.ok) throw new Error("Could not download receipt.");
+            const response = await fetch(
+                `${API_BASE_URL}/api/invoice/${invoiceId}`,
+                {
+                    headers: { Authorization: `Bearer ${user.token}` },
+                }
+            );
+            if (!response.ok) throw new Error('Could not download receipt.');
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -70,9 +76,9 @@ const MyRegistrationsList: React.FC = () => {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
-            toast.success("Receipt downloaded!", {id: loadingToast});
+            toast.success('Receipt downloaded!', { id: loadingToast });
         } catch (error: any) {
-            toast.error(error.message, {id: loadingToast});
+            toast.error(error.message, { id: loadingToast });
         }
     };
 
@@ -82,11 +88,17 @@ const MyRegistrationsList: React.FC = () => {
                 {[...Array(2)].map((_, index) => (
                     <div key={index} className="ticket-card-skeleton">
                         <div className="ticket-main-skeleton">
-                            <Skeleton className="h3-skeleton" style={{width: '70%', marginBottom: '1rem'}}/>
-                            <Skeleton className="p-skeleton" style={{width: '50%'}}/>
+                            <Skeleton
+                                className="h3-skeleton"
+                                style={{ width: '70%', marginBottom: '1rem' }}
+                            />
+                            <Skeleton
+                                className="p-skeleton"
+                                style={{ width: '50%' }}
+                            />
                         </div>
                         <div className="ticket-action-skeleton">
-                            <Skeleton className="button-skeleton"/>
+                            <Skeleton className="button-skeleton" />
                         </div>
                     </div>
                 ))}
@@ -100,27 +112,40 @@ const MyRegistrationsList: React.FC = () => {
                 <div className="empty-state-icon">🎟️</div>
                 <h2>No Tickets Yet</h2>
                 <p>You haven't registered for any events.</p>
-                <Link to="/home" className="cta-button">Browse Events</Link>
+                <Link to="/home" className="cta-button">
+                    Browse Events
+                </Link>
             </div>
         );
     }
 
     return (
         <div className="tickets-list">
-            {registrations.map(reg => (
+            {registrations.map((reg) => (
                 <div key={reg.id} className="ticket-card">
                     <div className="ticket-main">
                         <h3>{reg.event.name}</h3>
                         <div className="ticket-details">
-                            <p><strong>Date:</strong> {new Date(reg.event.date).toLocaleDateString()}</p>
-                            <p><strong>Location:</strong> {reg.event.location}</p>
+                            <p>
+                                <strong>Date:</strong>{' '}
+                                {new Date(reg.event.date).toLocaleDateString()}
+                            </p>
+                            <p>
+                                <strong>Location:</strong> {reg.event.location}
+                            </p>
                         </div>
                     </div>
                     <div className="ticket-actions">
                         {reg.invoice && (
-                            <button onClick={() => {
-                                if (reg.invoice) void handleDownloadInvoice(reg.invoice.id)
-                            }} className="button-primary">
+                            <button
+                                onClick={() => {
+                                    if (reg.invoice)
+                                        void handleDownloadInvoice(
+                                            reg.invoice.id
+                                        );
+                                }}
+                                className="button-primary"
+                            >
                                 Download Receipt
                             </button>
                         )}

@@ -1,14 +1,13 @@
-
 :root {
-    --paypal-blue: #0070BA;
+    --paypal-blue: #0070ba;
     --paypal-blue-dark: #003087;
-    --background-light: #F7F9FC;
-    --surface-white: #FFFFFF;
-    --text-primary: #2C2F33;
+    --background-light: #f7f9fc;
+    --surface-white: #ffffff;
+    --text-primary: #2c2f33;
     --text-secondary: #586574;
-    --border-light: #E1E7EB;
-    --danger: #C82506;
-    --danger-hover: #A61D00;
+    --border-light: #e1e7eb;
+    --danger: #c82506;
+    --danger-hover: #a61d00;
 }
 
 * {
@@ -18,7 +17,9 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+        Arial, sans-serif;
     background-color: var(--background-light);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
@@ -31,10 +32,14 @@ body {
     padding: 2rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
 }
-
 
 @keyframes fadeIn {
     from {
@@ -62,7 +67,6 @@ h1, h2, h3, h4, h5, h6 {
 .fade-in {
     animation: fadeIn 0.5s ease-out forwards;
 }
-
 
 .main-content-grid {
     display: grid;
@@ -102,7 +106,6 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 0;
 }
 
-
 .navbar {
     background-color: var(--surface-white);
     padding: 1rem 1.5rem;
@@ -114,7 +117,8 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.navbar-left, .navbar-right {
+.navbar-left,
+.navbar-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -156,7 +160,6 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--paypal-blue);
 }
 
-
 .section-header {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
@@ -192,7 +195,6 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
-
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -210,17 +212,23 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0.25rem 0 1rem 0;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     width: 100%;
     padding: 0.85rem 1rem;
     border-radius: 8px;
     border: 1px solid var(--border-light);
     background-color: var(--background-light);
     font-size: 1rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
     outline: none;
     border-color: var(--paypal-blue);
     box-shadow: 0 0 0 3px rgba(0, 112, 186, 0.2);
@@ -249,7 +257,8 @@ select {
     margin-top: 1rem;
 }
 
-.form-actions .cta-button, .form-actions .button-secondary {
+.form-actions .cta-button,
+.form-actions .button-secondary {
     flex-grow: 1;
 }
 
@@ -265,7 +274,9 @@ select {
     text-decoration: none;
     background-color: var(--paypal-blue);
     color: white;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .cta-button:hover {
@@ -297,8 +308,8 @@ select {
     font-weight: 500;
     font-size: 0.9rem;
     text-align: center;
-    background-color: #FFF2F2;
-    border: 1px solid #FFD9D9;
+    background-color: #fff2f2;
+    border: 1px solid #ffd9d9;
     color: var(--danger);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -355,7 +366,9 @@ select {
     color: var(--paypal-blue);
     cursor: pointer;
     font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .button-invoice:hover {
@@ -388,7 +401,6 @@ select {
     background-color: var(--text-secondary);
     cursor: not-allowed;
 }
-
 
 .event-card {
     display: flex;
@@ -437,7 +449,8 @@ select {
     margin-top: 0.5rem;
 }
 
-.event-actions .button-secondary, .event-actions .button-danger {
+.event-actions .button-secondary,
+.event-actions .button-danger {
     flex-grow: 1;
 }
 
@@ -448,7 +461,9 @@ select {
     box-shadow: 0 8px 24px rgba(44, 47, 51, 0.08);
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition:
+        transform 0.2s ease-out,
+        box-shadow 0.2s ease-out;
 }
 
 .ticket-card:hover {
@@ -456,7 +471,8 @@ select {
     box-shadow: 0 12px 28px rgba(44, 47, 51, 0.12);
 }
 
-.ticket-card::before, .ticket-card::after {
+.ticket-card::before,
+.ticket-card::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -552,7 +568,6 @@ select {
     color: var(--text-secondary);
 }
 
-
 .ai-feature-box {
     background-color: var(--background-light);
     border: 1px solid var(--border-light);
@@ -629,13 +644,13 @@ select {
     height: 68px;
 }
 
-
 @media (max-width: 1024px) {
     #root {
         padding: 1.5rem;
     }
 
-    .main-content-grid, .detail-page-grid {
+    .main-content-grid,
+    .detail-page-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -675,7 +690,8 @@ select {
         border-top: 2px dashed var(--border-light);
     }
 
-    .ticket-card::before, .ticket-card::after {
+    .ticket-card::before,
+    .ticket-card::after {
         display: none;
     }
 }
@@ -683,7 +699,6 @@ select {
 .navbar-brand {
     margin-right: 1.5rem;
 }
-
 
 .toast-button {
     margin-left: 10px;
@@ -693,7 +708,9 @@ select {
     cursor: pointer;
     color: white;
     font-weight: 500;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .toast-button:hover {
