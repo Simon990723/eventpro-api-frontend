@@ -1,97 +1,97 @@
-﻿import React, {useState} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
-import toast from 'react-hot-toast';
+﻿import React, {useState, type FormEvent} from 'react';
+import {Oval} from 'react-loader-spinner';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+interface AuthFormProps {
+    formType: 'login' | 'register';
+    onSubmit: (email: string, password: string, role?: string) => void;
+    isLoading: boolean;
+}
 
-const RegisterPage: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
+const AuthForm: React.FC<AuthFormProps> = ({formType, onSubmit, isLoading}) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('User');
 
-    const handleRegister = async (
-        email: string,
-        password: string,
-        role?: string
-    ) => {
-        setIsLoading(true);
-        const loadingToastId = toast.loading('Creating your account...');
+    const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-        try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/account/register`,
-                {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({email, password, role}),
-                }
-            );
+    const isRegisterForm = formType === 'register';
 
-            if (!response.ok) {
-                let errorMessage = 'Registration failed. Please try again.';
-                try {
-                    const errorData = await response.json();
-                    if (errorData && errorData.errors) {
-                        const errorList = Object.values(errorData.errors)
-                            .flat()
-                            .map((err: any, index: number) => (
-                                <li key={index}>{err}</li>
-                            ));
-
-                        errorMessage = (
-                            <div>
-                                <p style={{marginBottom: '0.5rem', fontWeight: 'bold'}}>
-                                    Please correct the following issues:
-                                </p>
-                                <ul style={{margin: 0, paddingLeft: '1.2rem'}}>
-                                    {errorList}
-                                </ul>
-                            </div>
-                        ) as any;
-                    } else if (errorData.message) {
-                        errorMessage = errorData.message;
-                    }
-                } catch {
-                    errorMessage = response.statusText;
-                }
-                throw new Error(errorMessage);
-            }
-
-            toast.success('Account created successfully! Please log in.', {
-                id: loadingToastId,
-            });
-            navigate('/login');
-        } catch (error: any) {
-            toast.error(error.message, {
-                id: loadingToastId,
-                duration: 6000,
-            });
-        } finally {
-            setIsLoading(false);
-        }
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        onSubmit(email, password, isRegisterForm ? role : undefined);
     };
 
+    const passwordRules = (
+        <div className="password-rules">
+            <p>Password must contain:</p>
+            <ul>
+                <li>At least 6 characters</li>
+                <li>At least one uppercase letter (A-Z)</li>
+                <li>At least one lowercase letter (a-z)</li>
+                <li>At least one number (0-9)</li>
+                <li>At least one special character (e.g., !@#$%^&*)</li>
+            </ul>
+        </div>
+    );
+
     return (
-        <div className="auth-container fade-in">
-            <AuthForm
-                formType="register"
-                onSubmit={handleRegister}
-                isLoading={isLoading}
-            />
-            <p
-                style={{
-                    textAlign: 'center',
-                    marginTop: '1.5rem',
-                    color: 'var(--text-medium)',
-                }}
-            >
-                Already have an account?{' '}
-                <Link to="/login" className="auth-link">
-                    Login here
-                </Link>
-            </p>
+        <div className="auth-form-container">
+            <h2>{isRegisterForm ? 'Create an Account' : 'Login'}</h2>
+            <form onSubmit={handleSubmit} className="auth-form">
+                <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        onFocus={() => setIsPasswordFocused(true)}
+                        onBlur={() => setIsPasswordFocused(false)}
+                    />
+                    {isRegisterForm && isPasswordFocused && passwordRules}
+                </div>
+
+                {isRegisterForm && (
+                    <div className="form-group">
+                        <label htmlFor="role">I am a:</label>
+                        <select
+                            id="role"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                        >
+                            <option value="User">Normal User (Attendee)</option>
+                            <option value="Creator">Event Creator</option>
+                        </select>
+                    </div>
+                )}
+
+                <button type="submit" className="cta-button" disabled={isLoading}>
+                    {isLoading ? (
+                        <Oval
+                            height={24}
+                            width={24}
+                            color="#ffffff"
+                            secondaryColor="#eeeeee"
+                            strokeWidth={4}
+                        />
+                    ) : (
+                        isRegisterForm ? 'Register' : 'Login'
+                    )}
+                </button>
+            </form>
         </div>
     );
 };
 
-export default RegisterPage;
+export default AuthForm;

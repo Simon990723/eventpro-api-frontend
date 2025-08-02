@@ -747,3 +747,25 @@ textarea:-webkit-autofill {
 .navbar a + a {
     margin-left: 1.5rem;
 }
+
+.password-rules {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.password-rules p {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.password-rules ul {
+    margin: 0;
+    padding-left: 18px;
+    line-height: 1.6;
+}
