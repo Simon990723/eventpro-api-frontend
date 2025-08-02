@@ -4,7 +4,7 @@ import AuthForm from '../components/AuthForm';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
-const API_BASE_URL = 'http://localhost:5189';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const LoginPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);

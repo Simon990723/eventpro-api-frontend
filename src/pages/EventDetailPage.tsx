@@ -27,7 +27,7 @@ interface NewRegistrant {
     email: string;
 }
 
-const API_BASE_URL = 'http://localhost:5189';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const EventDetailPage: React.FC = () => {
     const { eventId } = useParams<{ eventId: string }>();

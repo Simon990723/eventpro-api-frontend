@@ -25,7 +25,7 @@ interface DecodedToken {
     'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier': string;
 }
 
-const API_BASE_URL = 'http://localhost:5189';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const EventManagementPage: React.FC = () => {
     const { eventId } = useParams<{ eventId: string }>();
