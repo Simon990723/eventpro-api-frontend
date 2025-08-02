@@ -1,9 +1,9 @@
-﻿import React, { useState, useEffect, type FormEvent } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+﻿import React, {useState, useEffect, type FormEvent} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
+import {useAuth} from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { Oval } from 'react-loader-spinner';
-import { jwtDecode } from 'jwt-decode';
+import {Oval} from 'react-loader-spinner';
+import {jwtDecode} from 'jwt-decode';
 
 interface EventDetails {
     id: number;
@@ -30,8 +30,8 @@ interface NewRegistrant {
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const EventDetailPage: React.FC = () => {
-    const { eventId } = useParams<{ eventId: string }>();
-    const { user } = useAuth();
+    const {eventId} = useParams<{ eventId: string }>();
+    const {user} = useAuth();
     const navigate = useNavigate();
 
     const [event, setEvent] = useState<EventDetails | null>(null);
@@ -54,7 +54,7 @@ const EventDetailPage: React.FC = () => {
             try {
                 const eventRes = await fetch(
                     `${API_BASE_URL}/api/browse/events/${eventId}`,
-                    { headers: { Authorization: `Bearer ${user.token}` } }
+                    {headers: {Authorization: `Bearer ${user.token}`}}
                 );
                 if (!eventRes.ok) {
                     toast.error('The requested event could not be found.');
@@ -70,7 +70,7 @@ const EventDetailPage: React.FC = () => {
                 ) {
                     const regRes = await fetch(
                         `${API_BASE_URL}/api/registrants?eventId=${eventId}`,
-                        { headers: { Authorization: `Bearer ${user.token}` } }
+                        {headers: {Authorization: `Bearer ${user.token}`}}
                     );
                     if (!regRes.ok) {
                         toast.error('Could not fetch the list of registrants.');
@@ -115,7 +115,8 @@ const EventDetailPage: React.FC = () => {
                 try {
                     errorMessage =
                         JSON.parse(errorText).message || errorMessage;
-                } catch {}
+                } catch {
+                }
                 throw new Error(errorMessage);
             }
 
@@ -125,13 +126,13 @@ const EventDetailPage: React.FC = () => {
                 id: loadingToastId,
             });
 
-            setNewRegistrant({ name: '', email: user?.email || '' });
+            setNewRegistrant({name: '', email: user?.email || ''});
             if (user.roles.includes('Creator')) {
                 setRegistrants((prev) => [...prev, addedRegistrant]);
             }
-            navigate('/home');
+            navigate('/');
         } catch (err: any) {
-            toast.error(err.message, { id: loadingToastId });
+            toast.error(err.message, {id: loadingToastId});
         }
     };
 
@@ -141,7 +142,7 @@ const EventDetailPage: React.FC = () => {
         try {
             const response = await fetch(
                 `${API_BASE_URL}/api/invoice/${invoiceId}`,
-                { headers: { Authorization: `Bearer ${user.token}` } }
+                {headers: {Authorization: `Bearer ${user.token}`}}
             );
             if (!response.ok) {
                 toast.error('Could not download the receipt.', {
@@ -159,9 +160,9 @@ const EventDetailPage: React.FC = () => {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
-            toast.success('Receipt downloaded!', { id: loadingToast });
+            toast.success('Receipt downloaded!', {id: loadingToast});
         } catch (error: any) {
-            toast.error(error.message, { id: loadingToast });
+            toast.error(error.message, {id: loadingToast});
         }
     };
 
@@ -174,7 +175,7 @@ const EventDetailPage: React.FC = () => {
                     padding: '50px',
                 }}
             >
-                <Oval height={80} width={80} color="var(--paypal-blue)" />
+                <Oval height={80} width={80} color="var(--paypal-blue)"/>
             </div>
         );
     if (!event) return <p>Event not found.</p>;
