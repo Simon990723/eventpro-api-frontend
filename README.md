@@ -1,8 +1,8 @@
-# EventPro Platform - Frontend
+# EventPro Platform - Frontend ✨
 
 A modern, responsive frontend for a full-stack event management platform, built with React, TypeScript, and Vite. This application provides a seamless user experience for creating, discovering, and registering for events.
 
-**Live URL**: [https://simon-eventpro.com](https://simon-eventpro.com)
+**Live URL**: [https://simon-eventpro.com](https://simon-eventpro.com) 🌐
 
 ---
 
@@ -12,26 +12,26 @@ You can test the application's different user roles with the following accounts.
 
 **Password for all accounts**: `Password123!`
 
-| Role                      | Email                  |
-| :------------------------ | :--------------------- |
-| **Event Creator** | `creator1@example.com` |
-| **Normal User (Attendee)**| `user1@example.com`    |
+| Role | Email |
+| :--- | :--- |
+| **Event Creator** 🧑‍🎨 | `creator1@example.com` |
+| **Normal User (Attendee)** 🎟️ | `user1@example.com` |
 
 *(Additional test accounts such as `creator2@example.com`, `user2@example.com`, etc., are also available.)*
 
 ---
 
-## Key Features
+## ⭐ Key Features
 
-- **User Authentication**: Secure registration and login for event creators and users.
-- **Event Discovery**: Browse, search, and filter a comprehensive list of events.
-- **Event Management**: Dedicated dashboard for creators to create, update, and manage their events.
-- **Responsive Design**: Fully functional and visually appealing on all devices, from mobile to desktop.
-- **AI Integration**: Features an AI-powered assistant to help with event descriptions.
+- **🔐 User Authentication**: Secure registration and login for event creators and users.
+- **🔎 Event Discovery**: Browse, search, and filter a comprehensive list of events.
+- **📋 Event Management**: Dedicated dashboard for creators to create, update, and manage their events.
+- **📱 Responsive Design**: Fully functional and visually appealing on all devices, from mobile to desktop.
+- **🤖 AI Integration**: Features an AI-powered assistant to help with event descriptions.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - **Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
@@ -42,7 +42,7 @@ You can test the application's different user roles with the following accounts.
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -55,7 +55,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 1.  Clone the repository:
     ```sh
-    git clone [https://github.com/Simon990723/eventpro-api-frontend.git](https://github.com/Simon990723/eventpro-api-frontend.git)
+    git clone https://github.com/Simon990723/eventpro-api-frontend.git
     ```
 2.  Navigate to the project directory:
     ```sh
@@ -78,6 +78,6 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ---
 
-## Deployment
+## ☁️ Deployment
 
 This application is deployed on **AWS Amplify Hosting**, configured with a CI/CD pipeline that automatically builds and deploys changes pushed to the `main` branch. The backend is a .NET API running on **AWS App Runner**.
