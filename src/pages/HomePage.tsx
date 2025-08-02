@@ -37,7 +37,7 @@ const HomePage: FC = () => {
     const [editingEventId, setEditingEventId] = useState<number | null>(null);
     const [aiPrompt, setAiPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
-    const API_BASE_URL = 'http://localhost:5189';
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const fetchEvents = async () => {
         if (!user || !user.token) {
