@@ -1,26 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
-
-// Mobile detection hook
-const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    
-    useEffect(() => {
-        const checkMobile = () => {
-            const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                         window.innerWidth <= 768 ||
-                         ('ontouchstart' in window) ||
-                         (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-            setIsMobile(mobile);
-        };
-        
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-    
-    return isMobile;
-};
+import { useState } from 'react';
 
 interface CalendarWidgetProps {
     events?: Array<{
@@ -34,7 +13,6 @@ interface CalendarWidgetProps {
 const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const isMobile = useIsMobile();
 
     const today = new Date();
     const currentMonth = currentDate.getMonth();
@@ -89,26 +67,39 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                today.getFullYear() === currentYear;
     };
 
-    // Simplified animations for mobile
+    // Rich animations for all devices
     const containerVariants = {
-        hidden: { opacity: 0, scale: isMobile ? 1 : 0.9 },
+        hidden: { opacity: 0, scale: 0.9 },
         visible: {
             opacity: 1,
             scale: 1,
             transition: {
-                duration: isMobile ? 0.2 : 0.5,
-                staggerChildren: isMobile ? 0.01 : 0.02
+                duration: 0.5,
+                staggerChildren: 0.02,
+                ease: "easeOut"
             }
         }
     };
 
     const dayVariants = {
-        hidden: { opacity: 0, y: isMobile ? 0 : 10 },
+        hidden: { opacity: 0, y: 10 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: isMobile ? 0.1 : 0.3,
+                duration: 0.3,
+                ease: "easeOut"
+            }
+        }
+    };
+
+    const headerVariants = {
+        hidden: { opacity: 0, y: -20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.4,
                 ease: "easeOut"
             }
         }
@@ -121,42 +112,63 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             initial="hidden"
             animate="visible"
             style={{
-                background: isMobile ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: isMobile ? 'blur(5px)' : 'blur(10px)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
                 borderRadius: '16px',
                 padding: '1.5rem',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                boxShadow: isMobile ? '0 4px 16px rgba(0, 0, 0, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                 maxWidth: '320px',
                 margin: '0 auto',
-                willChange: isMobile ? 'auto' : 'transform'
+                position: 'relative',
+                overflow: 'hidden'
             }}
         >
+            {/* Floating background effect */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.05), transparent)',
+                    animation: 'rotate 20s linear infinite',
+                    opacity: 0.6,
+                    pointerEvents: 'none'
+                }}
+            />
+
             {/* Calendar Header */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '1rem'
-            }}>
+            <motion.div
+                variants={headerVariants}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1rem',
+                    position: 'relative',
+                    zIndex: 1
+                }}
+            >
                 <motion.button
                     onClick={() => navigateMonth('prev')}
-                    whileHover={isMobile ? {} : { scale: 1.1 }}
+                    whileHover={{ scale: 1.1, rotate: -5 }}
                     whileTap={{ scale: 0.9 }}
                     style={{
-                        background: 'var(--calendar-blue)',
+                        background: 'var(--gradient-primary)',
                         border: 'none',
                         borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
+                        width: '36px',
+                        height: '36px',
                         color: 'white',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
-                        boxShadow: isMobile ? '0 1px 4px rgba(59, 130, 246, 0.2)' : '0 2px 8px rgba(59, 130, 246, 0.3)',
-                        willChange: 'transform'
+                        fontSize: '16px',
+                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                        transition: 'all 0.2s ease'
                     }}
                 >
                     ←
@@ -164,18 +176,20 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.h3
                     key={`${currentMonth}-${currentYear}`}
-                    initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
+                    initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: isMobile ? 0.1 : 0.3 }}
+                    transition={{ duration: 0.3 }}
                     style={{
                         margin: 0,
-                        fontSize: '1.1rem',
-                        fontWeight: '600',
-                        background: isMobile ? 'var(--calendar-blue)' : 'var(--gradient-primary)',
+                        fontSize: '1.2rem',
+                        fontWeight: '700',
+                        background: 'var(--gradient-primary)',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: isMobile ? 'var(--calendar-blue)' : 'transparent',
+                        WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        color: isMobile ? 'var(--calendar-blue)' : 'transparent'
+                        backgroundSize: '200% 200%',
+                        animation: 'gradientShift 4s ease infinite',
+                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
                     }}
                 >
                     {monthNames[currentMonth]} {currentYear}
@@ -183,48 +197,56 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.button
                     onClick={() => navigateMonth('next')}
-                    whileHover={isMobile ? {} : { scale: 1.1 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.9 }}
                     style={{
-                        background: 'var(--calendar-blue)',
+                        background: 'var(--gradient-primary)',
                         border: 'none',
                         borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
+                        width: '36px',
+                        height: '36px',
                         color: 'white',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
-                        boxShadow: isMobile ? '0 1px 4px rgba(59, 130, 246, 0.2)' : '0 2px 8px rgba(59, 130, 246, 0.3)',
-                        willChange: 'transform'
+                        fontSize: '16px',
+                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                        transition: 'all 0.2s ease'
                     }}
                 >
                     →
                 </motion.button>
-            </div>
+            </motion.div>
 
             {/* Day Names */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(7, 1fr)',
                 gap: '4px',
-                marginBottom: '8px'
+                marginBottom: '8px',
+                position: 'relative',
+                zIndex: 1
             }}>
-                {dayNames.map(day => (
-                    <div
+                {dayNames.map((day, index) => (
+                    <motion.div
                         key={day}
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.3 }}
                         style={{
                             textAlign: 'center',
                             fontSize: '0.75rem',
-                            fontWeight: '500',
+                            fontWeight: '600',
                             color: 'var(--text-secondary)',
-                            padding: '4px'
+                            padding: '6px 4px',
+                            background: 'rgba(59, 130, 246, 0.05)',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(59, 130, 246, 0.1)'
                         }}
                     >
                         {day}
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 
@@ -232,54 +254,73 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(7, 1fr)',
-                gap: '4px'
+                gap: '4px',
+                position: 'relative',
+                zIndex: 1
             }}>
                 {calendarDays.map((day, index) => (
                     <motion.div
                         key={index}
                         variants={dayVariants}
-                        whileHover={day && !isMobile ? { scale: 1.1 } : undefined}
+                        whileHover={day ? { 
+                            scale: 1.15, 
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)'
+                        } : undefined}
                         whileTap={day ? { scale: 0.95 } : undefined}
                         onClick={() => day && setSelectedDate(new Date(currentYear, currentMonth, day))}
                         style={{
-                            height: '32px',
+                            height: '36px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '0.85rem',
+                            fontSize: '0.9rem',
                             borderRadius: '8px',
                             cursor: day ? 'pointer' : 'default',
                             position: 'relative',
                             background: day && isToday(day) 
-                                ? 'var(--calendar-blue)' 
+                                ? 'var(--gradient-primary)' 
                                 : day && selectedDate?.getDate() === day && selectedDate?.getMonth() === currentMonth
                                 ? 'rgba(59, 130, 246, 0.2)'
+                                : day 
+                                ? 'rgba(255, 255, 255, 0.8)'
                                 : 'transparent',
                             color: day && isToday(day) 
                                 ? 'white' 
                                 : day 
                                 ? 'var(--text-primary)' 
                                 : 'transparent',
-                            fontWeight: day && isToday(day) ? '600' : '400',
-                            transition: isMobile ? 'background-color 0.1s ease' : 'all 0.2s ease',
-                            willChange: 'transform'
+                            fontWeight: day && isToday(day) ? '700' : '500',
+                            transition: 'all 0.2s ease',
+                            border: day ? '1px solid rgba(59, 130, 246, 0.1)' : 'none',
+                            boxShadow: day && isToday(day) 
+                                ? '0 4px 12px rgba(59, 130, 246, 0.4)' 
+                                : day 
+                                ? '0 2px 4px rgba(0, 0, 0, 0.05)'
+                                : 'none'
                         }}
                     >
                         {day}
                         {day && hasEvent(day) && (
                             <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ duration: isMobile ? 0.1 : 0.3 }}
+                                initial={{ scale: 0, rotate: 0 }}
+                                animate={{ scale: 1, rotate: 360 }}
+                                transition={{ 
+                                    duration: 0.5, 
+                                    delay: index * 0.02,
+                                    type: "spring",
+                                    stiffness: 200
+                                }}
                                 style={{
                                     position: 'absolute',
-                                    bottom: '2px',
-                                    right: '2px',
-                                    width: '6px',
-                                    height: '6px',
+                                    bottom: '3px',
+                                    right: '3px',
+                                    width: '8px',
+                                    height: '8px',
                                     borderRadius: '50%',
-                                    background: 'var(--calendar-yellow)',
-                                    boxShadow: isMobile ? 'none' : '0 0 4px rgba(251, 191, 36, 0.5)'
+                                    background: 'var(--gradient-warning)',
+                                    boxShadow: '0 0 8px rgba(251, 191, 36, 0.6), 0 0 4px rgba(251, 191, 36, 0.8)',
+                                    animation: 'pulse 2s ease-in-out infinite'
                                 }}
                             />
                         )}
@@ -290,21 +331,37 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             {/* Event Count */}
             {events.length > 0 && (
                 <motion.div
-                    initial={{ opacity: 0, y: isMobile ? 0 : 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: isMobile ? 0.1 : 0.5, duration: isMobile ? 0.2 : 0.3 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.4, type: "spring" }}
                     style={{
-                        marginTop: '1rem',
-                        padding: '0.75rem',
-                        background: 'rgba(59, 130, 246, 0.1)',
-                        borderRadius: '8px',
+                        marginTop: '1.25rem',
+                        padding: '1rem',
+                        background: 'var(--gradient-success)',
+                        borderRadius: '12px',
                         textAlign: 'center',
-                        fontSize: '0.85rem',
-                        color: 'var(--text-secondary)',
-                        border: '1px solid rgba(59, 130, 246, 0.2)'
+                        fontSize: '0.9rem',
+                        color: 'white',
+                        fontWeight: '600',
+                        boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)',
+                        position: 'relative',
+                        overflow: 'hidden'
                     }}
                 >
-                    📅 {events.length} event{events.length !== 1 ? 's' : ''} this month
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                            animation: 'shimmer 2s infinite'
+                        }}
+                    />
+                    <span style={{ position: 'relative', zIndex: 1 }}>
+                        📅 {events.length} event{events.length !== 1 ? 's' : ''} this month
+                    </span>
                 </motion.div>
             )}
         </motion.div>

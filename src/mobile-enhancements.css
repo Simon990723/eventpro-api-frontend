@@ -1,0 +1,232 @@
+/* Enhanced Mobile Experience - Restore Rich UI/UX for iPhone 16 Pro Max and iPhone 16 Pro */
+
+/* Override previous mobile restrictions to restore rich experience */
+@media (max-width: 768px) {
+    /* Restore rich background effects */
+    body::before,
+    body::after {
+        opacity: 0.4 !important;
+        animation-duration: 40s !important;
+    }
+    
+    /* Restore glassmorphism */
+    .page-section,
+    .navbar,
+    .event-card,
+    .ticket-card,
+    .attendee-item {
+        backdrop-filter: blur(10px) !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Restore hover effects */
+    .page-section:hover,
+    .event-card:hover,
+    .ticket-card:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: var(--shadow-medium) !important;
+    }
+    
+    .event-card:hover {
+        transform: translateY(-4px) scale(1.02) !important;
+    }
+    
+    /* Restore calendar widget rich experience */
+    .calendar-widget {
+        backdrop-filter: blur(10px) !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Restore pseudo-elements */
+    .section-header h2::after {
+        display: block !important;
+    }
+    
+    .attendee-item::before {
+        display: block !important;
+    }
+    
+    .empty-state-container::before {
+        display: block !important;
+    }
+    
+    /* Restore button effects */
+    .cta-button::before,
+    .toast-button::before {
+        display: block !important;
+    }
+    
+    /* Restore rich gradients */
+    .cta-button {
+        background: var(--gradient-primary) !important;
+        background-size: 200% 200% !important;
+        animation: gradientShift 4s ease infinite !important;
+    }
+    
+    /* Restore navbar animation */
+    .navbar {
+        animation: gentleFloat 6s ease-in-out infinite !important;
+    }
+    
+    /* Restore text effects */
+    .detail-page-header h1 {
+        background: var(--gradient-primary) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        animation: gradientShift 6s ease infinite !important;
+        background-size: 200% 200% !important;
+    }
+    
+    .section-header h2 {
+        background: var(--gradient-primary) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        animation: gradientShift 6s ease infinite !important;
+    }
+}
+
+/* iPhone 16 Pro Max and iPhone 16 Pro specific optimizations */
+@media (max-width: 430px) {
+    #root {
+        padding: 1.25rem;
+    }
+    
+    .page-section {
+        padding: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .main-content-grid {
+        gap: 1.25rem;
+        margin-top: 1.25rem;
+    }
+    
+    .detail-page-grid {
+        gap: 1.25rem;
+    }
+    
+    .navbar {
+        padding: 0.875rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .event-card {
+        padding: 1.25rem;
+    }
+    
+    .ticket-card {
+        padding: 1.25rem;
+    }
+    
+    .attendee-item {
+        padding: 1rem 1.25rem;
+    }
+    
+    /* Ensure good touch targets for iPhone */
+    .event-actions button,
+    .event-actions a,
+    .cta-button {
+        min-height: 48px;
+        min-width: 48px;
+    }
+    
+    /* Calendar widget mobile optimization */
+    .calendar-widget {
+        max-width: 300px;
+        padding: 1.25rem;
+    }
+    
+    /* Form elements optimization for iPhone */
+    input,
+    textarea,
+    select {
+        padding: 1rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Better spacing for iPhone screens */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-actions {
+        gap: 1rem;
+        margin-top: 1.25rem;
+    }
+}
+
+/* iPhone 16 Pro Max specific (430px width) */
+@media (max-width: 430px) and (min-width: 415px) {
+    #root {
+        padding: 1.5rem;
+    }
+    
+    .page-section {
+        padding: 1.5rem;
+    }
+    
+    .calendar-widget {
+        max-width: 320px;
+    }
+}
+
+/* iPhone 16 Pro specific (393px width) */
+@media (max-width: 414px) and (min-width: 375px) {
+    #root {
+        padding: 1.25rem;
+    }
+    
+    .calendar-widget {
+        max-width: 300px;
+        padding: 1.25rem;
+    }
+}
+
+/* Touch device optimizations - convert hover effects to active states */
+@media (hover: none) and (pointer: coarse) {
+    .page-section:active,
+    .event-card:active,
+    .ticket-card:active,
+    .attendee-item:active {
+        transform: translateY(-4px) !important;
+        box-shadow: var(--shadow-medium) !important;
+    }
+    
+    .event-card:active {
+        transform: translateY(-4px) scale(1.02) !important;
+    }
+    
+    .navbar-brand:active {
+        transform: scale(1.05);
+    }
+    
+    .back-link:active {
+        transform: translateX(-3px);
+    }
+    
+    .button-invoice:active {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+    
+    .logout-button:active {
+        transform: scale(1.05);
+    }
+    
+    /* Keep hover animations as active states */
+    .section-header:active h2::after {
+        width: 100% !important;
+    }
+    
+    .attendee-item:active::before {
+        left: 100% !important;
+    }
+}
