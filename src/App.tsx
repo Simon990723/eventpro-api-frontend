@@ -10,10 +10,12 @@ import GuestRoute from './components/GuestRoute';
 import MyRegistrationsPage from './pages/MyRegistrationsPage';
 import EventManagementPage from './pages/EventManagementPage';
 import Navbar from './components/Navbar';
+import AnimatedBackground from './components/AnimatedBackground';
 
 const App: FC = () => {
     return (
         <div className="app-container">
+            <AnimatedBackground />
             <Navbar />
             <main>
                 <Routes>

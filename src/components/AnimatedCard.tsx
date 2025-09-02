@@ -67,11 +67,9 @@ const AnimatedCard = ({
             variants={cardVariants}
             initial="hidden"
             animate="visible"
-            whileHover={hoverVariants}
-            whileTap={tapVariants}
             style={{
-                cursor: 'pointer',
-                transformOrigin: 'center'
+                transformOrigin: 'center',
+                pointerEvents: 'auto'
             }}
         >
             {children}

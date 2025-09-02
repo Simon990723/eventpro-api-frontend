@@ -76,7 +76,7 @@ const AnimatedWrapper = ({
             animate={selectedAnimation.animate}
             exit={selectedAnimation.exit}
             transition={transition}
-            whileHover={animation !== 'staggerChildren' ? { scale: 1.02 } : undefined}
+            style={{ pointerEvents: 'auto' }}
         >
             {children}
         </motion.div>

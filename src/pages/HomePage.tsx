@@ -331,19 +331,17 @@ const HomePage: FC = () => {
                                 <p>Fill in the details below or use our AI assistant to get started.</p>
                             </div>
                         </AnimatedWrapper>
-                        <AnimatedWrapper animation="fadeIn" delay={0.4}>
-                            <EventForm
-                                formData={formData}
-                                editingEventId={editingEventId}
-                                handleInputChange={handleInputChange}
-                                handleFormSubmit={handleFormSubmit}
-                                handleCancelEdit={handleCancelEdit}
-                                aiPrompt={aiPrompt}
-                                setAiPrompt={setAiPrompt}
-                                handleGenerateWithAi={handleGenerateWithAi}
-                                isGenerating={isGenerating}
-                            />
-                        </AnimatedWrapper>
+                        <EventForm
+                            formData={formData}
+                            editingEventId={editingEventId}
+                            handleInputChange={handleInputChange}
+                            handleFormSubmit={handleFormSubmit}
+                            handleCancelEdit={handleCancelEdit}
+                            aiPrompt={aiPrompt}
+                            setAiPrompt={setAiPrompt}
+                            handleGenerateWithAi={handleGenerateWithAi}
+                            isGenerating={isGenerating}
+                        />
                     </motion.section>
                     
                     <motion.section 
@@ -356,16 +354,14 @@ const HomePage: FC = () => {
                                 <p>A list of all events you have created. You can manage them from here.</p>
                             </div>
                         </AnimatedWrapper>
-                        <AnimatedWrapper animation="fadeIn" delay={0.5}>
-                            <EventList
-                                events={events}
-                                loading={loading}
-                                error={null}
-                                handleEditClick={handleEditClick}
-                                handleDeleteEvent={handleDeleteEvent}
-                                isCreator={isCreator}
-                            />
-                        </AnimatedWrapper>
+                        <EventList
+                            events={events}
+                            loading={loading}
+                            error={null}
+                            handleEditClick={handleEditClick}
+                            handleDeleteEvent={handleDeleteEvent}
+                            isCreator={isCreator}
+                        />
                     </motion.section>
                 </motion.main>
             ) : (
@@ -379,24 +375,22 @@ const HomePage: FC = () => {
                         className="user-event-browser"
                         variants={itemVariants}
                     >
-                        <AnimatedCard className="page-section" delay={0.1} gradient={false}>
+                        <section className="page-section">
                             <AnimatedWrapper animation="bounceIn" delay={0.2}>
                                 <div className="section-header">
                                     <h2>🗓️ Upcoming Events</h2>
                                     <p>Find an event that interests you and click "Manage" to see details and register.</p>
                                 </div>
                             </AnimatedWrapper>
-                            <AnimatedWrapper animation="fadeIn" delay={0.4}>
-                                <EventList
-                                    events={events}
-                                    loading={loading}
-                                    error={null}
-                                    isCreator={isCreator}
-                                    handleEditClick={() => {}}
-                                    handleDeleteEvent={() => {}}
-                                />
-                            </AnimatedWrapper>
-                        </AnimatedCard>
+                            <EventList
+                                events={events}
+                                loading={loading}
+                                error={null}
+                                isCreator={isCreator}
+                                handleEditClick={() => {}}
+                                handleDeleteEvent={() => {}}
+                            />
+                        </section>
                     </motion.div>
                     
                     <motion.section 
@@ -409,9 +403,7 @@ const HomePage: FC = () => {
                                 <p>A list of all events you are registered to attend.</p>
                             </div>
                         </AnimatedWrapper>
-                        <AnimatedWrapper animation="scaleIn" delay={0.5}>
-                            <MyRegistrationsList />
-                        </AnimatedWrapper>
+                        <MyRegistrationsList />
                     </motion.section>
                 </motion.main>
             )}
