@@ -1614,3 +1614,197 @@ select:invalid {
         color: black !important;
     }
 }
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+    /* Disable expensive effects on mobile */
+    body::before,
+    body::after {
+        opacity: 0.15 !important;
+        animation-duration: 60s !important;
+    }
+    
+    /* Reduce backdrop blur for better performance */
+    .page-section,
+    .navbar,
+    .event-card,
+    .ticket-card,
+    .attendee-item {
+        backdrop-filter: blur(3px) !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+    }
+    
+    /* Simplify hover animations */
+    .page-section:hover,
+    .event-card:hover,
+    .ticket-card:hover {
+        transform: translateY(-2px) !important;
+    }
+    
+    /* Optimize transforms for mobile */
+    .event-card:hover {
+        transform: translateY(-2px) scale(1.005) !important;
+    }
+    
+    /* Optimize calendar widget for mobile */
+    .calendar-widget {
+        backdrop-filter: blur(3px) !important;
+        background: rgba(255, 255, 255, 0.98) !important;
+    }
+    
+    /* Reduce shadow complexity on mobile */
+    .page-section,
+    .event-card,
+    .ticket-card,
+    .attendee-item,
+    .navbar {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    /* Disable complex pseudo-elements on mobile */
+    .section-header h2::after {
+        display: none !important;
+    }
+    
+    .attendee-item::before {
+        display: none !important;
+    }
+    
+    .empty-state-container::before {
+        display: none !important;
+    }
+    
+    /* Optimize button interactions */
+    .cta-button::before,
+    .toast-button::before {
+        display: none !important;
+    }
+    
+    /* Force hardware acceleration for smooth scrolling */
+    body {
+        -webkit-overflow-scrolling: touch;
+        transform: translateZ(0);
+    }
+    
+    /* Optimize animated elements */
+    .floating-particle,
+    .geometric-shape,
+    .floating-calendar {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+    
+    /* Reduce animation complexity */
+    .gradient-animated {
+        animation-duration: 8s !important;
+    }
+    
+    /* Simplify gradients for mobile performance */
+    .cta-button {
+        background-size: 100% 100% !important;
+        animation-duration: 6s !important;
+    }
+    
+    /* Optimize navbar for mobile */
+    .navbar {
+        animation: none !important;
+    }
+    
+    /* Reduce text effects on mobile */
+    .detail-page-header h1 {
+        animation-duration: 10s !important;
+    }
+}
+
+/* iPhone specific optimizations */
+@media (max-width: 430px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* Further reduce effects for iPhone */
+    .animated-background {
+        opacity: 0.5 !important;
+    }
+    
+    /* Simplify gradients for better performance */
+    .cta-button {
+        background: var(--calendar-blue) !important;
+        background-size: 100% 100% !important;
+        animation: none !important;
+    }
+    
+    /* Reduce border radius for better performance */
+    .page-section,
+    .event-card,
+    .ticket-card {
+        border-radius: 8px !important;
+    }
+    
+    /* Optimize text rendering */
+    body {
+        text-rendering: optimizeSpeed !important;
+        -webkit-font-smoothing: subpixel-antialiased !important;
+    }
+    
+    /* Disable complex animations on iPhone */
+    .section-header h2 {
+        background: var(--calendar-blue) !important;
+        -webkit-background-clip: initial !important;
+        -webkit-text-fill-color: initial !important;
+        background-clip: initial !important;
+        animation: none !important;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .page-section:hover,
+    .event-card:hover,
+    .ticket-card:hover,
+    .attendee-item:hover,
+    .navbar:hover,
+    .navbar-brand:hover,
+    .back-link:hover,
+    .button-invoice:hover,
+    .logout-button:hover {
+        transform: none !important;
+        box-shadow: var(--shadow-light) !important;
+    }
+    
+    /* Optimize touch targets */
+    .event-actions button,
+    .event-actions a,
+    .cta-button {
+        min-height: 48px !important;
+        min-width: 48px !important;
+    }
+    
+    /* Disable complex hover animations */
+    .section-header:hover h2::after {
+        width: 0 !important;
+    }
+    
+    .attendee-item:hover::before {
+        left: -100% !important;
+    }
+}
+
+/* High refresh rate device optimizations */
+@media (min-resolution: 120dpi) {
+    .floating-particle,
+    .geometric-shape,
+    .floating-calendar {
+        animation-timing-function: linear !important;
+    }
+}
+
+/* Reduce motion for better mobile performance */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+    /* Still reduce animations even if user doesn't prefer reduced motion on mobile */
+    * {
+        animation-duration: 0.3s !important;
+        transition-duration: 0.2s !important;
+    }
+    
+    .animated-background {
+        opacity: 0.3 !important;
+    }
+}

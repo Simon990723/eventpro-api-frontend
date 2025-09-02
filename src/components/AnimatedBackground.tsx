@@ -12,43 +12,66 @@ interface Particle {
 
 const AnimatedBackground = () => {
     const [particles, setParticles] = useState<Particle[]>([]);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        // Enhanced mobile detection
+        const checkMobile = () => {
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                                 window.innerWidth <= 768 ||
+                                 ('ontouchstart' in window) ||
+                                 (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+            setIsMobile(isMobileDevice);
+            return isMobileDevice;
+        };
+
+        const isMobileDevice = checkMobile();
+
         const colors = [
-            'rgba(107, 114, 128, 0.1)', // calendar-grey
-            'rgba(59, 130, 246, 0.1)',  // calendar-blue
-            'rgba(251, 191, 36, 0.1)',  // calendar-yellow
-            'rgba(239, 68, 68, 0.1)',   // calendar-red
-            'rgba(156, 163, 175, 0.1)', // calendar-grey-light
+            'rgba(107, 114, 128, 0.05)', // calendar-grey - very subtle for mobile
+            'rgba(59, 130, 246, 0.05)',  // calendar-blue
+            'rgba(251, 191, 36, 0.03)',  // calendar-yellow
+            'rgba(239, 68, 68, 0.05)',   // calendar-red
+            'rgba(156, 163, 175, 0.03)', // calendar-grey-light
         ];
 
         const generateParticles = () => {
             const newParticles: Particle[] = [];
-            for (let i = 0; i < 25; i++) {
+            // Minimal particles on mobile for performance
+            const particleCount = isMobileDevice ? 4 : 12;
+            
+            for (let i = 0; i < particleCount; i++) {
                 newParticles.push({
                     id: i,
                     x: Math.random() * window.innerWidth,
                     y: Math.random() * window.innerHeight,
-                    size: Math.random() * 3 + 1,
+                    size: isMobileDevice ? Math.random() * 1 + 0.5 : Math.random() * 2 + 1,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    duration: Math.random() * 30 + 20,
+                    duration: isMobileDevice ? Math.random() * 60 + 50 : Math.random() * 40 + 30,
                 });
             }
             setParticles(newParticles);
         };
 
         generateParticles();
-        window.addEventListener('resize', generateParticles);
-        return () => window.removeEventListener('resize', generateParticles);
+        
+        const handleResize = () => {
+            checkMobile();
+            generateParticles();
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Simplified animations for mobile
     const floatingVariants = {
         animate: {
-            y: [0, -30, 0],
-            x: [0, 15, -15, 0],
-            rotate: [0, 180, 360],
+            y: isMobile ? [0, -15, 0] : [0, -30, 0],
+            x: isMobile ? [0, 8, -8, 0] : [0, 15, -15, 0],
+            rotate: isMobile ? [0, 90, 180] : [0, 180, 360],
             transition: {
-                duration: 20,
+                duration: isMobile ? 30 : 20,
                 repeat: Infinity,
                 ease: "easeInOut"
             }
@@ -57,16 +80,141 @@ const AnimatedBackground = () => {
 
     const pulseVariants = {
         animate: {
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
+            scale: isMobile ? [1, 1.1, 1] : [1, 1.2, 1],
+            opacity: isMobile ? [0.2, 0.4, 0.2] : [0.3, 0.6, 0.3],
             transition: {
-                duration: 4,
+                duration: isMobile ? 6 : 4,
                 repeat: Infinity,
                 ease: "easeInOut"
             }
         }
     };
 
+    // Don't render complex animations on mobile
+    if (isMobile) {
+        return (
+            <div className="animated-background">
+                {/* Only essential particles for mobile */}
+                {particles.slice(0, 3).map((particle) => (
+                    <motion.div
+                        key={particle.id}
+                        className="floating-particle"
+                        initial={{
+                            x: particle.x,
+                            y: particle.y,
+                            scale: 0,
+                            opacity: 0
+                        }}
+                        animate={{
+                            scale: 1,
+                            opacity: 0.3,
+                            y: [particle.y, particle.y - 30, particle.y],
+                            x: [particle.x, particle.x + 20, particle.x - 20, particle.x],
+                        }}
+                        transition={{
+                            duration: particle.duration,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: Math.random() * 10
+                        }}
+                        style={{
+                            position: 'fixed',
+                            width: particle.size,
+                            height: particle.size,
+                            backgroundColor: particle.color,
+                            borderRadius: '50%',
+                            pointerEvents: 'none',
+                            zIndex: -1,
+                            willChange: 'transform',
+                        }}
+                    />
+                ))}
+
+                {/* Simplified geometric shapes for mobile */}
+                <motion.div
+                    className="geometric-shape shape-mobile-1"
+                    animate={{
+                        y: [0, -10, 0],
+                        rotate: [0, 90, 180],
+                        opacity: [0.1, 0.2, 0.1]
+                    }}
+                    transition={{
+                        duration: 25,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    style={{
+                        position: 'fixed',
+                        top: '20%',
+                        left: '10%',
+                        width: '60px',
+                        height: '60px',
+                        background: 'linear-gradient(45deg, rgba(107, 114, 128, 0.05), rgba(59, 130, 246, 0.05))',
+                        borderRadius: '15px',
+                        pointerEvents: 'none',
+                        zIndex: -1,
+                        willChange: 'transform',
+                    }}
+                />
+
+                <motion.div
+                    className="geometric-shape shape-mobile-2"
+                    animate={{
+                        scale: [1, 1.05, 1],
+                        opacity: [0.1, 0.15, 0.1]
+                    }}
+                    transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 5
+                    }}
+                    style={{
+                        position: 'fixed',
+                        bottom: '25%',
+                        right: '15%',
+                        width: '50px',
+                        height: '50px',
+                        background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(239, 68, 68, 0.05))',
+                        borderRadius: '50%',
+                        pointerEvents: 'none',
+                        zIndex: -1,
+                        willChange: 'transform',
+                    }}
+                />
+
+                {/* Single subtle calendar icon for mobile */}
+                <motion.div
+                    className="floating-calendar mobile-calendar"
+                    animate={{ 
+                        opacity: [0, 0.1, 0.1, 0],
+                        scale: [0.8, 0.9, 0.8],
+                        rotate: [0, 45, 90]
+                    }}
+                    transition={{
+                        duration: 60,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    style={{
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        fontSize: '1rem',
+                        pointerEvents: 'none',
+                        zIndex: -1,
+                        filter: 'blur(2px)',
+                        willChange: 'transform',
+                    }}
+                >
+                    📅
+                </motion.div>
+            </div>
+        );
+    }
+
+    // Full desktop version
     return (
         <div className="animated-background">
             {/* Floating Particles */}
@@ -100,6 +248,7 @@ const AnimatedBackground = () => {
                         borderRadius: '50%',
                         pointerEvents: 'none',
                         zIndex: -1,
+                        willChange: 'transform',
                     }}
                 />
             ))}
@@ -115,10 +264,11 @@ const AnimatedBackground = () => {
                     left: '10%',
                     width: '100px',
                     height: '100px',
-                    background: 'linear-gradient(45deg, rgba(107, 114, 128, 0.1), rgba(59, 130, 246, 0.1))',
+                    background: 'linear-gradient(45deg, rgba(107, 114, 128, 0.08), rgba(59, 130, 246, 0.08))',
                     borderRadius: '20px',
                     pointerEvents: 'none',
                     zIndex: -1,
+                    willChange: 'transform',
                 }}
             />
 
@@ -132,10 +282,11 @@ const AnimatedBackground = () => {
                     right: '15%',
                     width: '80px',
                     height: '80px',
-                    background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(239, 68, 68, 0.1))',
+                    background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(239, 68, 68, 0.08))',
                     borderRadius: '50%',
                     pointerEvents: 'none',
                     zIndex: -1,
+                    willChange: 'transform',
                 }}
             />
 
@@ -149,43 +300,27 @@ const AnimatedBackground = () => {
                     left: '20%',
                     width: '60px',
                     height: '60px',
-                    background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.1))',
+                    background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.08), rgba(96, 165, 250, 0.08))',
                     clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
                     pointerEvents: 'none',
                     zIndex: -1,
+                    willChange: 'transform',
                 }}
             />
 
-            <motion.div
-                className="geometric-shape shape-4"
-                variants={pulseVariants}
-                animate="animate"
-                style={{
-                    position: 'fixed',
-                    bottom: '25%',
-                    right: '10%',
-                    width: '120px',
-                    height: '120px',
-                    background: 'linear-gradient(225deg, rgba(107, 114, 128, 0.08), rgba(251, 191, 36, 0.08))',
-                    borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                }}
-            />
-
-            {/* Calendar Elements - Subtle and Comfortable */}
+            {/* Calendar Elements - Desktop Only */}
             <motion.div
                 className="floating-calendar calendar-1"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ 
-                    opacity: [0, 0.2, 0.2, 0],
+                    opacity: [0, 0.15, 0.15, 0],
                     scale: [0, 0.8, 0.8, 0],
                     rotate: [0, 180],
                     x: [0, 50, -25, 0],
                     y: [0, -40, 20, 0]
                 }}
                 transition={{
-                    duration: 40,
+                    duration: 50,
                     repeat: Infinity,
                     ease: "easeInOut"
                 }}
@@ -193,10 +328,11 @@ const AnimatedBackground = () => {
                     position: 'fixed',
                     top: '15%',
                     left: '5%',
-                    fontSize: '1.5rem',
+                    fontSize: '1.2rem',
                     pointerEvents: 'none',
                     zIndex: -1,
                     filter: 'blur(1px)',
+                    willChange: 'transform',
                 }}
             >
                 📅
@@ -206,178 +342,33 @@ const AnimatedBackground = () => {
                 className="floating-calendar calendar-2"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ 
-                    opacity: [0, 0.4, 0.4, 0],
-                    scale: [0, 1.2, 1.2, 0],
-                    rotate: [0, -180],
-                    x: [0, -120, 80, 0],
-                    y: [0, 60, -40, 0]
+                    opacity: [0, 0.12, 0.12, 0],
+                    scale: [0, 0.9, 0.9, 0],
+                    rotate: [0, -90],
+                    x: [0, -60, 40, 0],
+                    y: [0, 30, -20, 0]
                 }}
                 transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 5
-                }}
-                style={{
-                    position: 'fixed',
-                    top: '60%',
-                    right: '8%',
-                    fontSize: '1.8rem',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    filter: 'blur(0.5px)',
-                }}
-            >
-                🗓️
-            </motion.div>
-
-            <motion.div
-                className="floating-calendar calendar-3"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ 
-                    opacity: [0, 0.5, 0.5, 0],
-                    scale: [0, 0.8, 0.8, 0],
-                    rotate: [0, 270],
-                    x: [0, 60, -30, 0],
-                    y: [0, -100, 50, 0]
-                }}
-                transition={{
-                    duration: 20,
+                    duration: 45,
                     repeat: Infinity,
                     ease: "easeInOut",
                     delay: 10
                 }}
                 style={{
                     position: 'fixed',
-                    bottom: '20%',
-                    left: '15%',
-                    fontSize: '1.5rem',
+                    top: '60%',
+                    right: '8%',
+                    fontSize: '1.1rem',
                     pointerEvents: 'none',
                     zIndex: -1,
-                    filter: 'blur(0.5px)',
-                }}
-            >
-                📆
-            </motion.div>
-
-            <motion.div
-                className="floating-calendar calendar-4"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ 
-                    opacity: [0, 0.3, 0.3, 0],
-                    scale: [0, 1.5, 1.5, 0],
-                    rotate: [0, 180],
-                    x: [0, -80, 40, 0],
-                    y: [0, 70, -35, 0]
-                }}
-                transition={{
-                    duration: 35,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 15
-                }}
-                style={{
-                    position: 'fixed',
-                    top: '40%',
-                    right: '20%',
-                    fontSize: '2.2rem',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    filter: 'blur(0.5px)',
+                    filter: 'blur(1px)',
+                    willChange: 'transform',
                 }}
             >
                 🗓️
             </motion.div>
 
-            {/* Event-related Icons */}
-            <motion.div
-                className="floating-icon event-icon-1"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ 
-                    opacity: [0, 0.4, 0.4, 0],
-                    scale: [0, 1, 1, 0],
-                    rotate: [0, 360],
-                    x: [0, 90, -45, 0],
-                    y: [0, -60, 30, 0]
-                }}
-                transition={{
-                    duration: 28,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 3
-                }}
-                style={{
-                    position: 'fixed',
-                    top: '25%',
-                    left: '80%',
-                    fontSize: '1.8rem',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    filter: 'blur(0.5px)',
-                }}
-            >
-                🎉
-            </motion.div>
-
-            <motion.div
-                className="floating-icon event-icon-2"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ 
-                    opacity: [0, 0.5, 0.5, 0],
-                    scale: [0, 1.3, 1.3, 0],
-                    rotate: [0, -270],
-                    x: [0, -70, 35, 0],
-                    y: [0, 80, -40, 0]
-                }}
-                transition={{
-                    duration: 32,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 8
-                }}
-                style={{
-                    position: 'fixed',
-                    bottom: '30%',
-                    right: '5%',
-                    fontSize: '1.6rem',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    filter: 'blur(0.5px)',
-                }}
-            >
-                🎪
-            </motion.div>
-
-            <motion.div
-                className="floating-icon event-icon-3"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ 
-                    opacity: [0, 0.6, 0.6, 0],
-                    scale: [0, 0.9, 0.9, 0],
-                    rotate: [0, 180],
-                    x: [0, 50, -25, 0],
-                    y: [0, -90, 45, 0]
-                }}
-                transition={{
-                    duration: 22,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 12
-                }}
-                style={{
-                    position: 'fixed',
-                    top: '70%',
-                    left: '25%',
-                    fontSize: '1.4rem',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    filter: 'blur(0.5px)',
-                }}
-            >
-                🎭
-            </motion.div>
-
-            {/* Animated Lines */}
+            {/* Simplified SVG lines for better performance */}
             <motion.svg
                 className="animated-lines"
                 style={{
@@ -388,112 +379,25 @@ const AnimatedBackground = () => {
                     height: '100%',
                     pointerEvents: 'none',
                     zIndex: -1,
+                    opacity: 0.3,
                 }}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 2 }}
+                animate={{ opacity: 0.3 }}
+                transition={{ duration: 3 }}
             >
                 <motion.path
                     d="M0,100 Q150,50 300,100 T600,100"
-                    stroke="rgba(102, 126, 234, 0.1)"
-                    strokeWidth="2"
+                    stroke="rgba(59, 130, 246, 0.06)"
+                    strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{
-                        duration: 8,
+                        duration: 12,
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
                 />
-                <motion.path
-                    d="M100,200 Q250,150 400,200 T700,200"
-                    stroke="rgba(240, 147, 251, 0.1)"
-                    strokeWidth="2"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 2
-                    }}
-                />
-                
-                {/* Calendar Grid Lines */}
-                <motion.g
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.1 }}
-                    transition={{ duration: 3, delay: 1 }}
-                >
-                    {/* Vertical lines */}
-                    <motion.line
-                        x1="20%" y1="0%" x2="20%" y2="100%"
-                        stroke="rgba(102, 126, 234, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="5,5"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.line
-                        x1="40%" y1="0%" x2="40%" y2="100%"
-                        stroke="rgba(240, 147, 251, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="3,7"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 18, repeat: Infinity, ease: "linear", delay: 2 }}
-                    />
-                    <motion.line
-                        x1="60%" y1="0%" x2="60%" y2="100%"
-                        stroke="rgba(79, 172, 254, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="4,6"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 12, repeat: Infinity, ease: "linear", delay: 4 }}
-                    />
-                    <motion.line
-                        x1="80%" y1="0%" x2="80%" y2="100%"
-                        stroke="rgba(245, 87, 108, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="6,4"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 1 }}
-                    />
-                    
-                    {/* Horizontal lines */}
-                    <motion.line
-                        x1="0%" y1="25%" x2="100%" y2="25%"
-                        stroke="rgba(102, 126, 234, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="8,2"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 16, repeat: Infinity, ease: "linear", delay: 3 }}
-                    />
-                    <motion.line
-                        x1="0%" y1="50%" x2="100%" y2="50%"
-                        stroke="rgba(240, 147, 251, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="5,5"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 14, repeat: Infinity, ease: "linear", delay: 5 }}
-                    />
-                    <motion.line
-                        x1="0%" y1="75%" x2="100%" y2="75%"
-                        stroke="rgba(79, 172, 254, 0.05)"
-                        strokeWidth="1"
-                        strokeDasharray="7,3"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 22, repeat: Infinity, ease: "linear", delay: 1.5 }}
-                    />
-                </motion.g>
             </motion.svg>
         </div>
     );

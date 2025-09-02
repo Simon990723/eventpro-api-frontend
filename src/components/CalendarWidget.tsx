@@ -1,6 +1,27 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
+// Mobile detection hook
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                         window.innerWidth <= 768 ||
+                         ('ontouchstart' in window) ||
+                         (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+            setIsMobile(mobile);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+    
+    return isMobile;
+};
+
 interface CalendarWidgetProps {
     events?: Array<{
         id: number;
@@ -13,6 +34,7 @@ interface CalendarWidgetProps {
 const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const isMobile = useIsMobile();
 
     const today = new Date();
     const currentMonth = currentDate.getMonth();
@@ -67,25 +89,26 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                today.getFullYear() === currentYear;
     };
 
+    // Simplified animations for mobile
     const containerVariants = {
-        hidden: { opacity: 0, scale: 0.9 },
+        hidden: { opacity: 0, scale: isMobile ? 1 : 0.9 },
         visible: {
             opacity: 1,
             scale: 1,
             transition: {
-                duration: 0.5,
-                staggerChildren: 0.02
+                duration: isMobile ? 0.2 : 0.5,
+                staggerChildren: isMobile ? 0.01 : 0.02
             }
         }
     };
 
     const dayVariants = {
-        hidden: { opacity: 0, y: 10 },
+        hidden: { opacity: 0, y: isMobile ? 0 : 10 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.3,
+                duration: isMobile ? 0.1 : 0.3,
                 ease: "easeOut"
             }
         }
@@ -98,14 +121,15 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             initial="hidden"
             animate="visible"
             style={{
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
+                background: isMobile ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: isMobile ? 'blur(5px)' : 'blur(10px)',
                 borderRadius: '16px',
                 padding: '1.5rem',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                boxShadow: isMobile ? '0 4px 16px rgba(0, 0, 0, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
                 maxWidth: '320px',
-                margin: '0 auto'
+                margin: '0 auto',
+                willChange: isMobile ? 'auto' : 'transform'
             }}
         >
             {/* Calendar Header */}
@@ -117,7 +141,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             }}>
                 <motion.button
                     onClick={() => navigateMonth('prev')}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={isMobile ? {} : { scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     style={{
                         background: 'var(--calendar-blue)',
@@ -131,7 +155,8 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '14px',
-                        boxShadow: '0 2px 8px rgba(59, 130, 246, 0.3)'
+                        boxShadow: isMobile ? '0 1px 4px rgba(59, 130, 246, 0.2)' : '0 2px 8px rgba(59, 130, 246, 0.3)',
+                        willChange: 'transform'
                     }}
                 >
                     ←
@@ -139,16 +164,18 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.h3
                     key={`${currentMonth}-${currentYear}`}
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: isMobile ? 0.1 : 0.3 }}
                     style={{
                         margin: 0,
                         fontSize: '1.1rem',
                         fontWeight: '600',
-                        background: 'var(--gradient-primary)',
+                        background: isMobile ? 'var(--calendar-blue)' : 'var(--gradient-primary)',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
+                        WebkitTextFillColor: isMobile ? 'var(--calendar-blue)' : 'transparent',
+                        backgroundClip: 'text',
+                        color: isMobile ? 'var(--calendar-blue)' : 'transparent'
                     }}
                 >
                     {monthNames[currentMonth]} {currentYear}
@@ -156,7 +183,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.button
                     onClick={() => navigateMonth('next')}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={isMobile ? {} : { scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     style={{
                         background: 'var(--calendar-blue)',
@@ -170,7 +197,8 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '14px',
-                        boxShadow: '0 2px 8px rgba(59, 130, 246, 0.3)'
+                        boxShadow: isMobile ? '0 1px 4px rgba(59, 130, 246, 0.2)' : '0 2px 8px rgba(59, 130, 246, 0.3)',
+                        willChange: 'transform'
                     }}
                 >
                     →
@@ -210,7 +238,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                     <motion.div
                         key={index}
                         variants={dayVariants}
-                        whileHover={day ? { scale: 1.1 } : undefined}
+                        whileHover={day && !isMobile ? { scale: 1.1 } : undefined}
                         whileTap={day ? { scale: 0.95 } : undefined}
                         onClick={() => day && setSelectedDate(new Date(currentYear, currentMonth, day))}
                         style={{
@@ -223,9 +251,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                             cursor: day ? 'pointer' : 'default',
                             position: 'relative',
                             background: day && isToday(day) 
-                                ? 'var(--gradient-primary)' 
+                                ? 'var(--calendar-blue)' 
                                 : day && selectedDate?.getDate() === day && selectedDate?.getMonth() === currentMonth
-                                ? 'rgba(102, 126, 234, 0.2)'
+                                ? 'rgba(59, 130, 246, 0.2)'
                                 : 'transparent',
                             color: day && isToday(day) 
                                 ? 'white' 
@@ -233,7 +261,8 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                                 ? 'var(--text-primary)' 
                                 : 'transparent',
                             fontWeight: day && isToday(day) ? '600' : '400',
-                            transition: 'all 0.2s ease'
+                            transition: isMobile ? 'background-color 0.1s ease' : 'all 0.2s ease',
+                            willChange: 'transform'
                         }}
                     >
                         {day}
@@ -241,6 +270,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                             <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
+                                transition={{ duration: isMobile ? 0.1 : 0.3 }}
                                 style={{
                                     position: 'absolute',
                                     bottom: '2px',
@@ -249,7 +279,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                                     height: '6px',
                                     borderRadius: '50%',
                                     background: 'var(--calendar-yellow)',
-                                    boxShadow: '0 0 4px rgba(251, 191, 36, 0.5)'
+                                    boxShadow: isMobile ? 'none' : '0 0 4px rgba(251, 191, 36, 0.5)'
                                 }}
                             />
                         )}
@@ -260,9 +290,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             {/* Event Count */}
             {events.length > 0 && (
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: isMobile ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: isMobile ? 0.1 : 0.5, duration: isMobile ? 0.2 : 0.3 }}
                     style={{
                         marginTop: '1rem',
                         padding: '0.75rem',
