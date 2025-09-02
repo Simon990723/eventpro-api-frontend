@@ -13,6 +13,7 @@ import EventList from '../components/EventList';
 import MyRegistrationsList from '../components/MyRegistrationsList';
 import AnimatedWrapper from '../components/AnimatedWrapper';
 import AnimatedCard from '../components/AnimatedCard';
+import CalendarWidget from '../components/CalendarWidget';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import Skeleton from '../components/Skeleton';
@@ -344,25 +345,40 @@ const HomePage: FC = () => {
                         />
                     </motion.section>
                     
-                    <motion.section 
-                        className="page-section"
-                        variants={itemVariants}
-                    >
-                        <AnimatedWrapper animation="slideInRight" delay={0.3}>
-                            <div className="section-header">
-                                <h2>🎯 Your Upcoming Events</h2>
-                                <p>A list of all events you have created. You can manage them from here.</p>
-                            </div>
-                        </AnimatedWrapper>
-                        <EventList
-                            events={events}
-                            loading={loading}
-                            error={null}
-                            handleEditClick={handleEditClick}
-                            handleDeleteEvent={handleDeleteEvent}
-                            isCreator={isCreator}
-                        />
-                    </motion.section>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                        <motion.section 
+                            className="page-section"
+                            variants={itemVariants}
+                        >
+                            <AnimatedWrapper animation="slideInRight" delay={0.3}>
+                                <div className="section-header">
+                                    <h2>🎯 Your Upcoming Events</h2>
+                                    <p>A list of all events you have created. You can manage them from here.</p>
+                                </div>
+                            </AnimatedWrapper>
+                            <EventList
+                                events={events}
+                                loading={loading}
+                                error={null}
+                                handleEditClick={handleEditClick}
+                                handleDeleteEvent={handleDeleteEvent}
+                                isCreator={isCreator}
+                            />
+                        </motion.section>
+                        
+                        <motion.div
+                            variants={itemVariants}
+                            style={{ alignSelf: 'center' }}
+                        >
+                            <CalendarWidget 
+                                events={events.map(event => ({
+                                    id: event.id,
+                                    name: event.name,
+                                    date: event.date
+                                }))}
+                            />
+                        </motion.div>
+                    </div>
                 </motion.main>
             ) : (
                 <motion.main 
@@ -393,18 +409,33 @@ const HomePage: FC = () => {
                         </section>
                     </motion.div>
                     
-                    <motion.section 
-                        className="page-section page-section--sidebar"
-                        variants={itemVariants}
-                    >
-                        <AnimatedWrapper animation="slideInRight" delay={0.3}>
-                            <div className="section-header">
-                                <h2>🎟️ My Registrations</h2>
-                                <p>A list of all events you are registered to attend.</p>
-                            </div>
-                        </AnimatedWrapper>
-                        <MyRegistrationsList />
-                    </motion.section>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                        <motion.section 
+                            className="page-section page-section--sidebar"
+                            variants={itemVariants}
+                        >
+                            <AnimatedWrapper animation="slideInRight" delay={0.3}>
+                                <div className="section-header">
+                                    <h2>🎟️ My Registrations</h2>
+                                    <p>A list of all events you are registered to attend.</p>
+                                </div>
+                            </AnimatedWrapper>
+                            <MyRegistrationsList />
+                        </motion.section>
+                        
+                        <motion.div
+                            variants={itemVariants}
+                            style={{ alignSelf: 'center' }}
+                        >
+                            <CalendarWidget 
+                                events={events.map(event => ({
+                                    id: event.id,
+                                    name: event.name,
+                                    date: event.date
+                                }))}
+                            />
+                        </motion.div>
+                    </div>
                 </motion.main>
             )}
         </>
