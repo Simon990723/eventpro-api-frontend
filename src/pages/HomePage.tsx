@@ -6,10 +6,13 @@
     type ChangeEvent,
     useRef,
 } from 'react';
+import { motion } from 'framer-motion';
 import '../App.css';
 import EventForm from '../components/EventForm';
 import EventList from '../components/EventList';
 import MyRegistrationsList from '../components/MyRegistrationsList';
+import AnimatedWrapper from '../components/AnimatedWrapper';
+import AnimatedCard from '../components/AnimatedCard';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import Skeleton from '../components/Skeleton';
@@ -285,68 +288,132 @@ const HomePage: FC = () => {
         );
     }
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: "easeOut"
+            }
+        }
+    };
+
     return (
         <>
             {isCreator ? (
-                <main className="main-content-grid fade-in">
-                    <section ref={formSectionRef} className="page-section">
-                        <div className="section-header">
-                            <h2>{editingEventId ? 'Edit Event' : 'Create an Event'}</h2>
-                            <p>Fill in the details below or use our AI assistant to get started.</p>
-                        </div>
-                        <EventForm
-                            formData={formData}
-                            editingEventId={editingEventId}
-                            handleInputChange={handleInputChange}
-                            handleFormSubmit={handleFormSubmit}
-                            handleCancelEdit={handleCancelEdit}
-                            aiPrompt={aiPrompt}
-                            setAiPrompt={setAiPrompt}
-                            handleGenerateWithAi={handleGenerateWithAi}
-                            isGenerating={isGenerating}
-                        />
-                    </section>
-                    <section className="page-section">
-                        <div className="section-header">
-                            <h2>Your Upcoming Events</h2>
-                            <p>A list of all events you have created. You can manage them from here.</p>
-                        </div>
-                        <EventList
-                            events={events}
-                            loading={loading}
-                            error={null}
-                            handleEditClick={handleEditClick}
-                            handleDeleteEvent={handleDeleteEvent}
-                            isCreator={isCreator}
-                        />
-                    </section>
-                </main>
-            ) : (
-                <main className="main-content-grid fade-in">
-                    <div className="user-event-browser">
-                        <section className="page-section">
+                <motion.main 
+                    className="main-content-grid"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <motion.section 
+                        ref={formSectionRef} 
+                        className="page-section"
+                        variants={itemVariants}
+                    >
+                        <AnimatedWrapper animation="slideInLeft" delay={0.2}>
                             <div className="section-header">
-                                <h2>🗓️ Upcoming Events</h2>
-                                <p>Find an event that interests you and click "Manage" to see details and register.</p>
+                                <h2>{editingEventId ? '✏️ Edit Event' : '✨ Create an Event'}</h2>
+                                <p>Fill in the details below or use our AI assistant to get started.</p>
                             </div>
+                        </AnimatedWrapper>
+                        <AnimatedWrapper animation="fadeIn" delay={0.4}>
+                            <EventForm
+                                formData={formData}
+                                editingEventId={editingEventId}
+                                handleInputChange={handleInputChange}
+                                handleFormSubmit={handleFormSubmit}
+                                handleCancelEdit={handleCancelEdit}
+                                aiPrompt={aiPrompt}
+                                setAiPrompt={setAiPrompt}
+                                handleGenerateWithAi={handleGenerateWithAi}
+                                isGenerating={isGenerating}
+                            />
+                        </AnimatedWrapper>
+                    </motion.section>
+                    
+                    <motion.section 
+                        className="page-section"
+                        variants={itemVariants}
+                    >
+                        <AnimatedWrapper animation="slideInRight" delay={0.3}>
+                            <div className="section-header">
+                                <h2>🎯 Your Upcoming Events</h2>
+                                <p>A list of all events you have created. You can manage them from here.</p>
+                            </div>
+                        </AnimatedWrapper>
+                        <AnimatedWrapper animation="fadeIn" delay={0.5}>
                             <EventList
                                 events={events}
                                 loading={loading}
                                 error={null}
+                                handleEditClick={handleEditClick}
+                                handleDeleteEvent={handleDeleteEvent}
                                 isCreator={isCreator}
-                                handleEditClick={() => {}}
-                                handleDeleteEvent={() => {}}
                             />
-                        </section>
-                    </div>
-                    <section className="page-section page-section--sidebar">
-                        <div className="section-header">
-                            <h2>🎟️ My Registrations</h2>
-                            <p>A list of all events you are registered to attend.</p>
-                        </div>
-                        <MyRegistrationsList />
-                    </section>
-                </main>
+                        </AnimatedWrapper>
+                    </motion.section>
+                </motion.main>
+            ) : (
+                <motion.main 
+                    className="main-content-grid"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <motion.div 
+                        className="user-event-browser"
+                        variants={itemVariants}
+                    >
+                        <AnimatedCard className="page-section" delay={0.1} gradient={false}>
+                            <AnimatedWrapper animation="bounceIn" delay={0.2}>
+                                <div className="section-header">
+                                    <h2>🗓️ Upcoming Events</h2>
+                                    <p>Find an event that interests you and click "Manage" to see details and register.</p>
+                                </div>
+                            </AnimatedWrapper>
+                            <AnimatedWrapper animation="fadeIn" delay={0.4}>
+                                <EventList
+                                    events={events}
+                                    loading={loading}
+                                    error={null}
+                                    isCreator={isCreator}
+                                    handleEditClick={() => {}}
+                                    handleDeleteEvent={() => {}}
+                                />
+                            </AnimatedWrapper>
+                        </AnimatedCard>
+                    </motion.div>
+                    
+                    <motion.section 
+                        className="page-section page-section--sidebar"
+                        variants={itemVariants}
+                    >
+                        <AnimatedWrapper animation="slideInRight" delay={0.3}>
+                            <div className="section-header">
+                                <h2>🎟️ My Registrations</h2>
+                                <p>A list of all events you are registered to attend.</p>
+                            </div>
+                        </AnimatedWrapper>
+                        <AnimatedWrapper animation="scaleIn" delay={0.5}>
+                            <MyRegistrationsList />
+                        </AnimatedWrapper>
+                    </motion.section>
+                </motion.main>
             )}
         </>
     );
