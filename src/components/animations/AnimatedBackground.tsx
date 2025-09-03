@@ -1,8 +1,8 @@
 import React from 'react';
-import CSSAnimatedBackground from './CSSAnimatedBackground';
+import SimpleTestBackground from './SimpleTestBackground';
 
 const AnimatedBackground: React.FC = () => {
-    return <CSSAnimatedBackground />;
+    return <SimpleTestBackground />;
 };
 
 export default AnimatedBackground;

@@ -1,17 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
 import type { FC } from 'react';
-import './App.css';
+import './styles/App.css';
 import HomePage from './pages/HomePage';
 import EventDetailPage from './pages/EventDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import GuestRoute from './components/GuestRoute';
 import MyRegistrationsPage from './pages/MyRegistrationsPage';
 import EventManagementPage from './pages/EventManagementPage';
-import Navbar from './components/Navbar';
-import AnimatedBackground from './components/AnimatedBackground';
 import AnimatedDemo from './pages/AnimatedDemo';
+import {
+  Navbar,
+  ProtectedRoute,
+  GuestRoute,
+  AnimatedBackground,
+} from './components';
 
 const App: FC = () => {
     return (
