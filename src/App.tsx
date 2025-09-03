@@ -11,6 +11,7 @@ import MyRegistrationsPage from './pages/MyRegistrationsPage';
 import EventManagementPage from './pages/EventManagementPage';
 import Navbar from './components/Navbar';
 import AnimatedBackground from './components/AnimatedBackground';
+import AnimatedDemo from './pages/AnimatedDemo';
 
 const App: FC = () => {
     return (
@@ -67,6 +68,10 @@ const App: FC = () => {
                                 <RegisterPage />
                             </GuestRoute>
                         }
+                    />
+                    <Route
+                        path="/animated-demo"
+                        element={<AnimatedDemo />}
                     />
                 </Routes>
             </main>
