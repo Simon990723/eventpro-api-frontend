@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import type { FC } from 'react';
-import './styles/animated-design.css';
+import './styles/App.css';
 import HomePage from './pages/HomePage';
 import EventDetailPage from './pages/EventDetailPage';
 import LoginPage from './pages/LoginPage';
@@ -17,7 +17,7 @@ import {
 
 const App: FC = () => {
     return (
-        <div className="animated-app">
+        <div className="app-container">
             <AnimatedBackground />
             <Navbar />
             <main>
