@@ -82,6 +82,9 @@
     position: relative;
     min-height: 100vh;
     overflow-x: hidden;
+    /* Ensure a visible ambient background even if animations are not running */
+    background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #f1f5f9 100%);
+    background-attachment: fixed;
 }
 
 .animated-app::before {
@@ -92,9 +95,9 @@
     width: 120%;
     height: 120%;
     background: 
-        radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(26, 54, 93, 0.06) 0%, transparent 45%),
-        radial-gradient(circle at 40% 80%, rgba(243, 156, 18, 0.04) 0%, transparent 35%);
+        radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(26, 54, 93, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 40% 80%, rgba(243, 156, 18, 0.06) 0%, transparent 35%);
     animation: subtleMove 45s ease-in-out infinite;
     pointer-events: none;
     z-index: -2;
@@ -108,9 +111,9 @@
     width: 100%;
     height: 100%;
     background-image: 
-        radial-gradient(2px 2px at 25% 25%, rgba(74, 144, 226, 0.3), transparent),
-        radial-gradient(1px 1px at 75% 75%, rgba(26, 54, 93, 0.2), transparent),
-        radial-gradient(3px 3px at 60% 40%, rgba(243, 156, 18, 0.2), transparent);
+        radial-gradient(2px 2px at 25% 25%, rgba(74, 144, 226, 0.4), transparent),
+        radial-gradient(1px 1px at 75% 75%, rgba(26, 54, 93, 0.28), transparent),
+        radial-gradient(3px 3px at 60% 40%, rgba(243, 156, 18, 0.24), transparent);
     background-size: 150px 150px, 100px 100px, 200px 200px;
     animation: floatingParticles 60s linear infinite;
     pointer-events: none;
