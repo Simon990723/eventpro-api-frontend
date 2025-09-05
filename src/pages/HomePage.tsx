@@ -7,7 +7,7 @@
     useRef,
 } from 'react';
 import { motion } from 'framer-motion';
-import '../styles/App.css';
+import '../styles/animated-design.css';
 import EventForm from '../components/forms/EventForm';
 import EventList from '../components/ui/EventList';
 import MyRegistrationsList from '../components/ui/MyRegistrationsList';
@@ -270,19 +270,19 @@ const HomePage: FC = () => {
 
     if (isAuthLoading) {
         return (
-            <main className="main-content-grid fade-in">
-                <div className="page-section">
-                    <Skeleton className="h2-skeleton" style={{ marginBottom: '0.5rem' }} />
-                    <Skeleton className="p-skeleton" style={{ marginBottom: '2rem' }} />
-                    <Skeleton className="list-item-skeleton" style={{ marginBottom: '1rem', height: '40px' }} />
-                    <Skeleton className="list-item-skeleton" style={{ marginBottom: '1rem', height: '40px' }} />
-                    <Skeleton className="list-item-skeleton" style={{ height: '45px', borderRadius: '25px' }} />
+            <main className="animated-container animated-grid-2 fade-in">
+                <div className="animated-card">
+                    <Skeleton variant="text" width="60%" height="2rem" animation="wave" style={{ marginBottom: '0.5rem' }} />
+                    <Skeleton variant="text" width="80%" height="1.2rem" animation="wave" style={{ marginBottom: '2rem' }} />
+                    <Skeleton variant="rectangular" width="100%" height="40px" animation="wave" style={{ marginBottom: '1rem' }} />
+                    <Skeleton variant="rectangular" width="100%" height="40px" animation="wave" style={{ marginBottom: '1rem' }} />
+                    <Skeleton variant="rounded" width="100%" height="45px" animation="wave" />
                 </div>
-                <div className="page-section">
-                    <Skeleton className="h2-skeleton" style={{ marginBottom: '0.5rem' }} />
-                    <Skeleton className="p-skeleton" style={{ marginBottom: '2rem' }} />
-                    <Skeleton className="attendee-item-skeleton" />
-                    <Skeleton className="attendee-item-skeleton" />
+                <div className="animated-card">
+                    <Skeleton variant="text" width="60%" height="2rem" animation="wave" style={{ marginBottom: '0.5rem' }} />
+                    <Skeleton variant="text" width="80%" height="1.2rem" animation="wave" style={{ marginBottom: '2rem' }} />
+                    <Skeleton variant="rectangular" width="100%" height="68px" animation="wave" style={{ marginBottom: '1rem' }} />
+                    <Skeleton variant="rectangular" width="100%" height="68px" animation="wave" />
                 </div>
             </main>
         );
@@ -315,20 +315,20 @@ const HomePage: FC = () => {
         <>
             {isCreator ? (
                 <motion.main 
-                    className="main-content-grid"
+                    className="animated-container animated-grid-2"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <motion.section 
                         ref={formSectionRef} 
-                        className="page-section"
+                        className="animated-card scroll-reveal"
                         variants={itemVariants}
                     >
                         <AnimatedWrapper animation="slideInLeft" delay={0.2}>
-                            <div className="section-header">
-                                <h2>{editingEventId ? '✏️ Edit Event' : '✨ Create an Event'}</h2>
-                                <p>Fill in the details below or use our AI assistant to get started.</p>
+                            <div className="animated-section-header">
+                                <h2 className="animated-heading-2">{editingEventId ? '✏️ Edit Event' : '✨ Create an Event'}</h2>
+                                <p className="animated-body">Fill in the details below or use our AI assistant to get started.</p>
                             </div>
                         </AnimatedWrapper>
                         <EventForm
@@ -346,13 +346,13 @@ const HomePage: FC = () => {
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                         <motion.section 
-                            className="page-section"
+                            className="animated-card scroll-reveal"
                             variants={itemVariants}
                         >
                             <AnimatedWrapper animation="slideInRight" delay={0.3}>
-                                <div className="section-header">
-                                    <h2>🎯 Your Upcoming Events</h2>
-                                    <p>A list of all events you have created. You can manage them from here.</p>
+                                <div className="animated-section-header">
+                                    <h2 className="animated-heading-2">🎯 Your Upcoming Events</h2>
+                                    <p className="animated-body">A list of all events you have created. You can manage them from here.</p>
                                 </div>
                             </AnimatedWrapper>
                             <EventList
@@ -381,7 +381,7 @@ const HomePage: FC = () => {
                 </motion.main>
             ) : (
                 <motion.main 
-                    className="main-content-grid"
+                    className="animated-container animated-grid-2"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -390,11 +390,11 @@ const HomePage: FC = () => {
                         className="user-event-browser"
                         variants={itemVariants}
                     >
-                        <section className="page-section">
+                        <section className="animated-card scroll-reveal">
                             <AnimatedWrapper animation="bounceIn" delay={0.2}>
-                                <div className="section-header">
-                                    <h2>🗓️ Upcoming Events</h2>
-                                    <p>Find an event that interests you and click "Manage" to see details and register.</p>
+                                <div className="animated-section-header">
+                                    <h2 className="animated-heading-2">🗓️ Upcoming Events</h2>
+                                    <p className="animated-body">Find an event that interests you and click "Manage" to see details and register.</p>
                                 </div>
                             </AnimatedWrapper>
                             <EventList

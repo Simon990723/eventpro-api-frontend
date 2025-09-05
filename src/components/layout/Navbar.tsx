@@ -15,37 +15,37 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="navbar">
-            <div className="navbar-left">
-                <Link to="/" className="navbar-brand">
+        <nav className="animated-navbar">
+            <div className="animated-navbar-left">
+                <Link to="/" className="animated-navbar-brand">
                     <img src="/logo.png" alt="EventPro Platform Logo" />
                     <span>EventPro Platform</span>
                 </Link>
                 {user && (
-                    <div className="navbar-links">
-                        <Link to="/">Home</Link>
+                    <div className="animated-navbar-nav">
+                        <Link to="/" className="animated-navbar-link">Home</Link>
                         {!isCreator && (
-                            <Link to="/my-registrations">My Registrations</Link>
+                            <Link to="/my-registrations" className="animated-navbar-link">My Registrations</Link>
                         )}
                     </div>
                 )}
             </div>
 
-            <div className="navbar-right">
+            <div className="animated-navbar-right">
                 {user ? (
                     <>
-                        <span className="welcome-text">{user.email}</span>
+                        <span className="animated-text-secondary">{user.email}</span>
                         <button
                             onClick={handleLogout}
-                            className="logout-button"
+                            className="animated-btn animated-btn-danger animated-btn-sm"
                         >
                             Logout
                         </button>
                     </>
                 ) : (
-                    <div className="navbar-links">
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
+                    <div className="animated-navbar-nav">
+                        <Link to="/login" className="animated-navbar-link">Login</Link>
+                        <Link to="/register" className="animated-navbar-link">Register</Link>
                     </div>
                 )}
             </div>
