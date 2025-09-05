@@ -1,5 +1,5 @@
 import React from 'react';
-import '../animated-design.css';
+import '../../styles/animated-design.css';
 
 interface AnimatedLayoutProps {
     children: React.ReactNode;

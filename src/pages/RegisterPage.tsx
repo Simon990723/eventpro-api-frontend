@@ -1,6 +1,6 @@
 ﻿import React, {useState} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
+import AuthForm from '../components/forms/AuthForm';
 import toast from 'react-hot-toast';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;

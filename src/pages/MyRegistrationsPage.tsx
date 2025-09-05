@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import MyRegistrationsList from '../components/MyRegistrationsList';
+import MyRegistrationsList from '../components/ui/MyRegistrationsList';
 
 const MyRegistrationsPage: React.FC = () => {
     return (

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import AnimatedLayout from '../components/AnimatedLayout';
-import '../animated-design.css';
+import AnimatedLayout from "../components/layout/AnimatedLayout";
+import { useScrollRevealRef } from "../hooks/useScrollReveal";
+import Skeleton from "../components/ui/Skeleton";
+import "../styles/animated-design.css";
 
 const AnimatedDemo: React.FC = () => {
     const [activeTab, setActiveTab] = useState('overview');
     const [showModal, setShowModal] = useState(false);
+    const scrollRevealRef = useScrollRevealRef();
 
     const achievements = [
         {
@@ -335,14 +338,83 @@ const AnimatedDemo: React.FC = () => {
                                     </table>
                                 </div>
 
-                                {/* Loading States Demo */}
+                                {/* Enhanced Skeleton Loading States */}
                                 <div className="animated-card animated-mt-8">
-                                    <h3 className="animated-heading-3">Loading States</h3>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        <div className="animated-skeleton animated-skeleton-title"></div>
-                                        <div className="animated-skeleton animated-skeleton-text"></div>
-                                        <div className="animated-skeleton animated-skeleton-text" style={{ width: '80%' }}></div>
-                                        <div className="animated-skeleton animated-skeleton-text" style={{ width: '60%' }}></div>
+                                    <h3 className="animated-heading-3">Enhanced Skeleton Components</h3>
+                                    <div className="animated-grid animated-grid-2" style={{ gap: '2rem' }}>
+                                        {/* Wave Animation */}
+                                        <div>
+                                            <h4 className="animated-heading-4">Wave Animation</h4>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                                                <Skeleton variant="text" width="100%" animation="wave" />
+                                                <Skeleton variant="text" width="80%" animation="wave" />
+                                                <Skeleton variant="text" width="60%" animation="wave" />
+                                                <Skeleton variant="circular" width={60} height={60} animation="wave" />
+                                                <Skeleton variant="rectangular" width="100%" height={120} animation="wave" />
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Pulse Animation */}
+                                        <div>
+                                            <h4 className="animated-heading-4">Pulse Animation</h4>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                                                <Skeleton variant="text" width="100%" animation="pulse" />
+                                                <Skeleton variant="text" width="80%" animation="pulse" />
+                                                <Skeleton variant="text" width="60%" animation="pulse" />
+                                                <Skeleton variant="circular" width={60} height={60} animation="pulse" />
+                                                <Skeleton variant="rounded" width="100%" height={120} animation="pulse" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Scroll Reveal Animations Demo */}
+                                <div className="animated-card animated-mt-8">
+                                    <h3 className="animated-heading-3">Scroll Reveal Animations</h3>
+                                    <p className="animated-body" style={{ marginBottom: '2rem' }}>
+                                        Scroll down to see elements animate as they come into view. These animations respect prefers-reduced-motion settings.
+                                    </p>
+                                    
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+                                        {/* Fade in from bottom */}
+                                        <div ref={scrollRevealRef} className="scroll-reveal animated-card" style={{ padding: '2rem' }}>
+                                            <h4 className="animated-heading-4">Fade In Up</h4>
+                                            <p>This card fades in from the bottom as it enters the viewport.</p>
+                                        </div>
+                                        
+                                        {/* Fade in from left */}
+                                        <div ref={scrollRevealRef} className="scroll-reveal-left animated-card" style={{ padding: '2rem' }}>
+                                            <h4 className="animated-heading-4">Fade In Left</h4>
+                                            <p>This card slides in from the left side of the screen.</p>
+                                        </div>
+                                        
+                                        {/* Fade in from right */}
+                                        <div ref={scrollRevealRef} className="scroll-reveal-right animated-card" style={{ padding: '2rem' }}>
+                                            <h4 className="animated-heading-4">Fade In Right</h4>
+                                            <p>This card slides in from the right side of the screen.</p>
+                                        </div>
+                                        
+                                        {/* Scale animation */}
+                                        <div ref={scrollRevealRef} className="scroll-reveal-scale animated-card" style={{ padding: '2rem' }}>
+                                            <h4 className="animated-heading-4">Scale In</h4>
+                                            <p>This card scales up from a smaller size when it becomes visible.</p>
+                                        </div>
+                                        
+                                        {/* Staggered elements */}
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+                                            <div ref={scrollRevealRef} className="scroll-reveal animated-card">
+                                                <h5 className="animated-heading-5">Card 1</h5>
+                                                <p>Staggered animation with delay</p>
+                                            </div>
+                                            <div ref={scrollRevealRef} className="scroll-reveal animated-card">
+                                                <h5 className="animated-heading-5">Card 2</h5>
+                                                <p>Each card appears with increasing delay</p>
+                                            </div>
+                                            <div ref={scrollRevealRef} className="scroll-reveal animated-card">
+                                                <h5 className="animated-heading-5">Card 3</h5>
+                                                <p>Creating a beautiful staggered effect</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

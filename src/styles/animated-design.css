@@ -77,6 +77,165 @@
     padding: 0;
 }
 
+/* Animated App Container */
+.animated-app {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.animated-app::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120%;
+    height: 120%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(26, 54, 93, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 40% 80%, rgba(243, 156, 18, 0.04) 0%, transparent 35%);
+    animation: subtleMove 45s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.animated-app::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 25% 25%, rgba(74, 144, 226, 0.3), transparent),
+        radial-gradient(1px 1px at 75% 75%, rgba(26, 54, 93, 0.2), transparent),
+        radial-gradient(3px 3px at 60% 40%, rgba(243, 156, 18, 0.2), transparent);
+    background-size: 150px 150px, 100px 100px, 200px 200px;
+    animation: floatingParticles 60s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Scroll Reveal Animation System */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-scale.revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger delays for multiple elements */
+.scroll-reveal:nth-child(1) { transition-delay: 0ms; }
+.scroll-reveal:nth-child(2) { transition-delay: 100ms; }
+.scroll-reveal:nth-child(3) { transition-delay: 200ms; }
+.scroll-reveal:nth-child(4) { transition-delay: 300ms; }
+.scroll-reveal:nth-child(5) { transition-delay: 400ms; }
+.scroll-reveal:nth-child(6) { transition-delay: 500ms; }
+
+/* Skeleton Loading Animations */
+.skeleton {
+    background: var(--animated-gray-200);
+    border-radius: var(--animated-radius-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-wave {
+    background: linear-gradient(
+        90deg,
+        var(--animated-gray-200) 25%,
+        var(--animated-gray-300) 50%,
+        var(--animated-gray-200) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonWave 1.6s ease-in-out infinite;
+}
+
+.skeleton-pulse {
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonWave {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes skeletonPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .animated-app::before,
+    .animated-app::after {
+        animation: none;
+    }
+    
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale {
+        transition: opacity 0.3s ease;
+        transform: none;
+    }
+    
+    .skeleton-wave,
+    .skeleton-pulse {
+        animation: none;
+    }
+    
+    .skeleton {
+        background: var(--animated-gray-300);
+    }
+}
+
 body {
     font-family: var(--animated-font-family);
     font-size: var(--animated-font-size-base);
@@ -110,6 +269,13 @@ body::before {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
     33% { transform: translate(10px, -10px) rotate(1deg); }
     66% { transform: translate(-5px, 5px) rotate(-0.5deg); }
+}
+
+@keyframes floatingParticles {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.3; }
+    25% { transform: translateY(-20px) translateX(10px) rotate(90deg); opacity: 0.6; }
+    50% { transform: translateY(-10px) translateX(-15px) rotate(180deg); opacity: 0.4; }
+    75% { transform: translateY(-25px) translateX(5px) rotate(270deg); opacity: 0.7; }
 }
 
 /* Typography System */
@@ -708,6 +874,198 @@ body::before {
     
     .animated-section-title {
         font-size: var(--animated-font-size-2xl);
+    }
+}
+
+/* iPhone 16 Pro Max Optimizations (430px width) */
+@media (max-width: 430px) and (min-width: 415px) {
+    .animated-container {
+        padding: 0 var(--animated-spacing-5);
+        max-width: 100%;
+    }
+    
+    .animated-navbar {
+        padding: var(--animated-spacing-4) var(--animated-spacing-5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    .animated-card {
+        padding: var(--animated-spacing-6);
+        transform: translateZ(0); /* Hardware acceleration */
+        will-change: transform;
+    }
+    
+    .animated-btn {
+        padding: var(--animated-spacing-4) var(--animated-spacing-6);
+        font-size: var(--animated-font-size-base);
+        min-height: 48px; /* Touch-friendly */
+        touch-action: manipulation;
+        transform: translateZ(0);
+    }
+    
+    .animated-hero-title {
+        font-size: var(--animated-font-size-3xl);
+        line-height: 1.2;
+        transform: translateZ(0);
+    }
+    
+    .animated-section-title {
+        font-size: var(--animated-font-size-3xl);
+        line-height: 1.2;
+    }
+    
+    /* Enhanced touch interactions */
+    .animated-card:active {
+        transform: translateZ(0) scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    .animated-btn:active {
+        transform: translateZ(0) scale(0.96);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Optimized animations */
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale {
+        transform: translateZ(0);
+        will-change: opacity, transform;
+    }
+    
+    /* Modal optimizations */
+    .animated-modal {
+        width: 95%;
+        margin: var(--animated-spacing-4);
+        transform: translateZ(0);
+    }
+    
+    /* Grid optimizations */
+    .animated-grid-2 {
+        gap: var(--animated-spacing-4);
+    }
+    
+    .animated-stats-grid {
+        gap: var(--animated-spacing-3);
+    }
+}
+
+/* iPhone 16 Pro Optimizations (393px width) */
+@media (max-width: 414px) and (min-width: 375px) {
+    .animated-container {
+        padding: 0 var(--animated-spacing-4);
+        max-width: 100%;
+    }
+    
+    .animated-navbar {
+        padding: var(--animated-spacing-3) var(--animated-spacing-4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    .animated-card {
+        padding: var(--animated-spacing-5);
+        transform: translateZ(0);
+        will-change: transform;
+    }
+    
+    .animated-btn {
+        padding: var(--animated-spacing-3) var(--animated-spacing-5);
+        min-height: 44px;
+        touch-action: manipulation;
+        transform: translateZ(0);
+    }
+    
+    .animated-hero-title {
+        font-size: var(--animated-font-size-2xl);
+        line-height: 1.2;
+        transform: translateZ(0);
+    }
+    
+    /* Enhanced touch feedback */
+    .animated-card:active {
+        transform: translateZ(0) scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Optimized tab navigation */
+    .animated-tab-list {
+        gap: var(--animated-spacing-3);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .animated-tab-list::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .animated-tab {
+        flex-shrink: 0;
+        padding: var(--animated-spacing-3) var(--animated-spacing-4);
+        min-width: fit-content;
+    }
+}
+
+/* Performance optimizations for all iPhone models */
+@media (max-width: 430px) {
+    /* Hardware acceleration for smooth animations */
+    .animated-app,
+    .animated-navbar,
+    .animated-card,
+    .animated-btn,
+    .animated-modal {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+    
+    /* Optimized background animations */
+    .animated-app::before,
+    .animated-app::after {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+    }
+    
+    /* Smooth scrolling */
+    html {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+    
+    /* Touch action optimizations */
+    .animated-tab,
+    .animated-navbar-link,
+    .animated-btn,
+    .animated-card {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        .animated-app::before,
+        .animated-app::after {
+            animation: none !important;
+        }
+    }
+    
+    /* Enhanced focus states for accessibility */
+    .animated-btn:focus-visible,
+    .animated-tab:focus-visible {
+        outline: 2px solid var(--animated-primary);
+        outline-offset: 2px;
+    }
+    
+    /* Optimized skeleton animations */
+    .skeleton-wave,
+    .skeleton-pulse {
+        transform: translateZ(0);
+        will-change: background-position, opacity;
     }
 }
 

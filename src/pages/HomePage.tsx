@@ -7,16 +7,15 @@
     useRef,
 } from 'react';
 import { motion } from 'framer-motion';
-import '../App.css';
-import EventForm from '../components/EventForm';
-import EventList from '../components/EventList';
-import MyRegistrationsList from '../components/MyRegistrationsList';
-import AnimatedWrapper from '../components/AnimatedWrapper';
-import AnimatedCard from '../components/AnimatedCard';
-import CalendarWidget from '../components/CalendarWidget';
+import '../styles/App.css';
+import EventForm from '../components/forms/EventForm';
+import EventList from '../components/ui/EventList';
+import MyRegistrationsList from '../components/ui/MyRegistrationsList';
+import AnimatedWrapper from '../components/animations/AnimatedWrapper';
+import CalendarWidget from '../components/ui/CalendarWidget';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
-import Skeleton from '../components/Skeleton';
+import Skeleton from '../components/ui/Skeleton';
 import { type Event } from '../types/Event';
 
 interface NewEvent {

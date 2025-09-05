@@ -2,7 +2,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import Skeleton from '../components/Skeleton';
+import Skeleton from '../components/ui/Skeleton';
 import { jwtDecode } from 'jwt-decode';
 
 interface EventDetails {
