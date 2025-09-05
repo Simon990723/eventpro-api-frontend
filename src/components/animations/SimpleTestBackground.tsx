@@ -35,7 +35,7 @@ const SimpleTestBackground: React.FC = () => {
         left: 0,
         width: '100%',
         height: '100%',
-        zIndex: -1,
+        zIndex: 0,
         pointerEvents: 'none',
         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
       }}
