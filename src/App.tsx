@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import './styles/App.css';
 import './styles/animated-design.css';
 import HomePage from './pages/HomePage';
@@ -17,6 +17,22 @@ import {
 } from './components';
 
 const App: FC = () => {
+    useEffect(() => {
+        let timeoutId: number | undefined;
+        const onScroll = () => {
+            document.body.classList.add('scrolling');
+            if (timeoutId) window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => {
+                document.body.classList.remove('scrolling');
+            }, 150);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            if (timeoutId) window.clearTimeout(timeoutId);
+        };
+    }, []);
+
     return (
         <div className="animated-app">
             <AnimatedBackground />

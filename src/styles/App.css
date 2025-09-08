@@ -1480,7 +1480,7 @@ select:focus-visible {
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
     :root {
         --text-primary: #000000;
         --text-secondary: #333333;
@@ -1873,4 +1873,12 @@ select:invalid {
 
 .auth-link:hover {
     text-decoration: underline;
+}
+
+
+/* Performance: pause body background animations while actively scrolling */
+body.scrolling,
+body.scrolling::before {
+    animation-play-state: paused !important;
+    will-change: auto;
 }

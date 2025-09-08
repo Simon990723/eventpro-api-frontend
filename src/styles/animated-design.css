@@ -85,7 +85,7 @@
     overflow-x: hidden;
     /* Ensure a visible ambient background even if animations are not running */
     background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #f1f5f9 100%);
-    background-attachment: fixed;
+    /* Avoid background-attachment: fixed to reduce repaint cost during scroll */
 }
 
 .animated-app::before {
@@ -280,6 +280,15 @@ body::before {
     25% { transform: translateY(-20px) translateX(10px) rotate(90deg); opacity: 0.6; }
     50% { transform: translateY(-10px) translateX(-15px) rotate(180deg); opacity: 0.4; }
     75% { transform: translateY(-25px) translateX(5px) rotate(270deg); opacity: 0.7; }
+}
+
+/* Pause heavy animated layers during scroll to prevent jank */
+body.scrolling,
+body.scrolling::before,
+body.scrolling .animated-app::before,
+body.scrolling .animated-app::after {
+    animation-play-state: paused !important;
+    will-change: auto;
 }
 
 /* Typography System */
