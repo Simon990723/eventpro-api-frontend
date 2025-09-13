@@ -8,7 +8,7 @@ interface AnimatedLayoutProps {
 const AnimatedLayout: React.FC<AnimatedLayoutProps> = ({ children }) => {
     return (
         <div className="animated-app">
-            {/* Titansoft-like Ambient Background */}
+            {/* Ambient Background */}
             <div className="ts-background" aria-hidden="true">
                 <div className="ts-blob ts-blob-a" />
                 <div className="ts-blob ts-blob-b" />
