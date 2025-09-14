@@ -18,7 +18,6 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
 
-    // Get first day of the month and number of days
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
     const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
     const firstDayWeekday = firstDayOfMonth.getDay();
@@ -57,8 +56,13 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
     };
 
     const hasEvent = (day: number) => {
-        const dateStr = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
-        return events.some(event => event.date.startsWith(dateStr));
+        const targetDate = new Date(currentYear, currentMonth, day);
+        return events.some(event => {
+            const eventDate = new Date(event.date);
+            return eventDate.getFullYear() === targetDate.getFullYear() &&
+                   eventDate.getMonth() === targetDate.getMonth() &&
+                   eventDate.getDate() === targetDate.getDate();
+        });
     };
 
     const isToday = (day: number) => {
@@ -76,7 +80,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             transition: {
                 duration: 0.5,
                 staggerChildren: 0.02,
-                ease: "easeOut"
+                ease: [0.25, 0.46, 0.45, 0.94]
             }
         }
     };
@@ -88,7 +92,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             y: 0,
             transition: {
                 duration: 0.3,
-                ease: "easeOut"
+                ease: [0.25, 0.46, 0.45, 0.94]
             }
         }
     };
@@ -100,48 +104,58 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             y: 0,
             transition: {
                 duration: 0.4,
-                ease: "easeOut"
+                ease: [0.25, 0.46, 0.45, 0.94]
             }
         }
     };
 
+    // Create mobile-safe variants
+    const mobileVariants = undefined;
+
+    // Check if device is mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
     return (
         <motion.div
             className={`calendar-widget ${className}`}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            variants={isMobile ? mobileVariants : containerVariants}
+            initial={isMobile ? undefined : "hidden"}
+            animate={isMobile ? undefined : "visible"}
             style={{
                 background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
+                backdropFilter: isMobile ? 'none' : 'blur(10px)',
                 borderRadius: '16px',
                 padding: '1.5rem',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                boxShadow: isMobile ? '0 2px 8px rgba(0, 0, 0, 0.1)' : '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                 maxWidth: '320px',
                 margin: '0 auto',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                transform: isMobile ? 'translateZ(0)' : undefined,
+                backfaceVisibility: isMobile ? 'hidden' : undefined
             }}
         >
-            {/* Floating background effect */}
-            <div
-                style={{
-                    position: 'absolute',
-                    top: '-50%',
-                    left: '-50%',
-                    width: '200%',
-                    height: '200%',
-                    background: 'conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.05), transparent)',
-                    animation: 'rotate 20s linear infinite',
-                    opacity: 0.6,
-                    pointerEvents: 'none'
-                }}
-            />
+            {/* Floating background effect - disabled on mobile */}
+            {!isMobile && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        background: 'conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.05), transparent)',
+                        animation: 'rotate 20s linear infinite',
+                        opacity: 0.6,
+                        pointerEvents: 'none'
+                    }}
+                />
+            )}
 
             {/* Calendar Header */}
             <motion.div
-                variants={headerVariants}
+                variants={isMobile ? mobileVariants : headerVariants}
                 style={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -153,8 +167,8 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             >
                 <motion.button
                     onClick={() => navigateMonth('prev')}
-                    whileHover={{ scale: 1.1, rotate: -5 }}
-                    whileTap={{ scale: 0.9 }}
+                    whileHover={isMobile ? undefined : { scale: 1.1, rotate: -5 }}
+                    whileTap={isMobile ? undefined : { scale: 0.9 }}
                     style={{
                         background: 'var(--gradient-primary)',
                         border: 'none',
@@ -197,8 +211,8 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.button
                     onClick={() => navigateMonth('next')}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    whileTap={{ scale: 0.9 }}
+                    whileHover={isMobile ? undefined : { scale: 1.1, rotate: 5 }}
+                    whileTap={isMobile ? undefined : { scale: 0.9 }}
                     style={{
                         background: 'var(--gradient-primary)',
                         border: 'none',
@@ -261,13 +275,13 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 {calendarDays.map((day, index) => (
                     <motion.div
                         key={index}
-                        variants={dayVariants}
-                        whileHover={day ? { 
+                        variants={isMobile ? mobileVariants : dayVariants}
+                        whileHover={day && !isMobile ? { 
                             scale: 1.15, 
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)'
                         } : undefined}
-                        whileTap={day ? { scale: 0.95 } : undefined}
+                        whileTap={day && !isMobile ? { scale: 0.95 } : undefined}
                         onClick={() => day && setSelectedDate(new Date(currentYear, currentMonth, day))}
                         style={{
                             height: '36px',
