@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { useState } from 'react';
 
 interface CalendarWidgetProps {
@@ -72,7 +73,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
     };
 
     // Rich animations for all devices
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0, scale: 0.9 },
         visible: {
             opacity: 1,
@@ -80,37 +81,34 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             transition: {
                 duration: 0.5,
                 staggerChildren: 0.02,
-                ease: [0.25, 0.46, 0.45, 0.94]
+                ease: "easeOut"
             }
         }
     };
 
-    const dayVariants = {
+    const dayVariants: Variants = {
         hidden: { opacity: 0, y: 10 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
                 duration: 0.3,
-                ease: [0.25, 0.46, 0.45, 0.94]
+                ease: "easeOut"
             }
         }
     };
 
-    const headerVariants = {
+    const headerVariants: Variants = {
         hidden: { opacity: 0, y: -20 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
                 duration: 0.4,
-                ease: [0.25, 0.46, 0.45, 0.94]
+                ease: "easeOut"
             }
         }
     };
-
-    // Create mobile-safe variants
-    const mobileVariants = undefined;
 
     // Check if device is mobile
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
@@ -118,7 +116,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
     return (
         <motion.div
             className={`calendar-widget ${className}`}
-            variants={isMobile ? mobileVariants : containerVariants}
+            variants={isMobile ? undefined : containerVariants}
             initial={isMobile ? undefined : "hidden"}
             animate={isMobile ? undefined : "visible"}
             style={{
@@ -155,7 +153,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
 
             {/* Calendar Header */}
             <motion.div
-                variants={isMobile ? mobileVariants : headerVariants}
+                variants={isMobile ? undefined : headerVariants}
                 style={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -190,9 +188,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 
                 <motion.h3
                     key={`${currentMonth}-${currentYear}`}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
+                    initial={isMobile ? undefined : { opacity: 0, y: -10 }}
+                    animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+                    transition={isMobile ? undefined : { duration: 0.3 }}
                     style={{
                         margin: 0,
                         fontSize: '1.2rem',
@@ -245,9 +243,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 {dayNames.map((day, index) => (
                     <motion.div
                         key={day}
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
+                        initial={isMobile ? undefined : { opacity: 0, y: -5 }}
+                        animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+                        transition={isMobile ? undefined : { delay: index * 0.05, duration: 0.3 }}
                         style={{
                             textAlign: 'center',
                             fontSize: '0.75rem',
@@ -275,7 +273,7 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                 {calendarDays.map((day, index) => (
                     <motion.div
                         key={index}
-                        variants={isMobile ? mobileVariants : dayVariants}
+                        variants={isMobile ? undefined : dayVariants}
                         whileHover={day && !isMobile ? { 
                             scale: 1.15, 
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -317,9 +315,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
                         {day}
                         {day && hasEvent(day) && (
                             <motion.div
-                                initial={{ scale: 0, rotate: 0 }}
-                                animate={{ scale: 1, rotate: 360 }}
-                                transition={{ 
+                                initial={isMobile ? undefined : { scale: 0, rotate: 0 }}
+                                animate={isMobile ? undefined : { scale: 1, rotate: 360 }}
+                                transition={isMobile ? undefined : { 
                                     duration: 0.5, 
                                     delay: index * 0.02,
                                     type: "spring",
@@ -345,9 +343,9 @@ const CalendarWidget = ({ events = [], className = '' }: CalendarWidgetProps) =>
             {/* Event Count */}
             {events.length > 0 && (
                 <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: 0.6, duration: 0.4, type: "spring" }}
+                    initial={isMobile ? undefined : { opacity: 0, y: 20, scale: 0.9 }}
+                    animate={isMobile ? undefined : { opacity: 1, y: 0, scale: 1 }}
+                    transition={isMobile ? undefined : { delay: 0.6, duration: 0.4, type: "spring" }}
                     style={{
                         marginTop: '1.25rem',
                         padding: '1rem',
