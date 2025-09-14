@@ -1,8 +1,8 @@
 import React from 'react';
-import SimpleTestBackground from './SimpleTestBackground';
+import AuroraBubblesBackground from './AuroraBubblesBackground';
 
 const AnimatedBackground: React.FC = () => {
-    return <SimpleTestBackground />;
+    return <AuroraBubblesBackground />;
 };
 
 export default AnimatedBackground;
