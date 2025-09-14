@@ -3,92 +3,173 @@
 const AuroraBubblesBackground: React.FC = () => {
   React.useEffect(() => {
     const style = document.createElement('style');
-    style.setAttribute('data-aurora-bubbles', 'true');
+    style.setAttribute('data-dynamic-bubbles', 'true');
     style.textContent = `
-      /* Self-contained background styles (no global collisions) */
-      .aurora-bg {
+      /* Dynamic animated background with better readability */
+      .dynamic-bg {
         position: fixed;
         inset: 0;
         pointer-events: none;
         z-index: 0;
         overflow: hidden;
 
-        /* Rich violet-indigo base field with a subtle top glow */
+        /* Lighter gradient for better text readability */
         background:
-          radial-gradient(60vmin 60vmin at 50% -10%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 35%, transparent 70%),
-          linear-gradient(0deg, #3d2bd0 0%, #5a3ff2 60%);
+          radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 80% 90%, rgba(167, 139, 250, 0.12) 0%, transparent 50%),
+          linear-gradient(135deg, #f8fafc 0%, #e2e8f0 30%, #ddd6fe 70%, #c7d2fe 100%);
       }
 
-      /* Gentle dotted parallax layer */
-      .aurora-bg::after {
+      /* Floating particle layer with smooth motion */
+      .dynamic-bg::before {
         content: '';
         position: absolute;
         inset: 0;
         background-image:
-          radial-gradient(2px 2px at 25% 25%, rgba(255,255,255,0.16), transparent 45%),
-          radial-gradient(1.5px 1.5px at 75% 70%, rgba(255,255,255,0.10), transparent 45%),
-          radial-gradient(1px 1px at 60% 40%, rgba(255,255,255,0.08), transparent 50%);
-        background-size: 140px 140px, 180px 180px, 220px 220px;
-        animation: auroraParallax 60s linear infinite;
-        mix-blend-mode: soft-light;
+          radial-gradient(2px 2px at 20% 30%, rgba(139, 92, 246, 0.4), transparent 50%),
+          radial-gradient(3px 3px at 40% 70%, rgba(167, 139, 250, 0.3), transparent 50%),
+          radial-gradient(1px 1px at 90% 40%, rgba(196, 181, 253, 0.5), transparent 50%);
+        background-size: 200px 200px, 300px 300px, 150px 150px;
+        animation: particleFloat 20s linear infinite;
+        opacity: 0.8;
       }
 
-      .aurora-orb {
+      /* Moving wave pattern overlay */
+      .dynamic-bg::after {
+        content: '';
         position: absolute;
-        top: -22vmin;
-        left: 50%;
-        width: 84vmin;
-        height: 84vmin;
-        transform: translateX(-50%);
-        border-radius: 50%;
-        background: radial-gradient(circle at 50% 50%,
-          rgba(255,255,255,0.14) 0%,
-          rgba(133, 114, 255, 0.10) 35%,
-          rgba(91, 63, 245, 0.06) 60%,
-          rgba(0,0,0,0) 75%);
-        filter: blur(6px);
-        opacity: 0.65;
-        animation: orbPulse 18s ease-in-out infinite;
+        inset: 0;
+        background: 
+          radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+          radial-gradient(circle at 100% 50%, rgba(167, 139, 250, 0.05) 0%, transparent 50%);
+        animation: wavePattern 25s ease-in-out infinite;
+        opacity: 0.7;
       }
 
-      .aurora-blob {
+      .floating-bubble {
         position: absolute;
         border-radius: 50%;
-        filter: blur(8px);
-        opacity: 0.75;
-        mix-blend-mode: screen;
-        transform-origin: 50% 50%;
-        will-change: transform;
+        filter: blur(1px);
+        opacity: 0.6;
+        mix-blend-mode: multiply;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
       }
 
-      /* Keyframes for subtle drift and parallax */
-      @keyframes driftA {
-        0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
-        50% { transform: translate(22px, -18px) scale(1.05) rotate(10deg); }
-      }
-      @keyframes driftB {
-        0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
-        50% { transform: translate(-18px, 20px) scale(1.04) rotate(-8deg); }
-      }
-      @keyframes driftC {
-        0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
-        50% { transform: translate(16px, 14px) scale(1.06) rotate(6deg); }
-      }
-      @keyframes orbPulse {
-        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.65; }
-        50% { transform: translateX(-50%) scale(1.03); opacity: 0.8; }
-      }
-      @keyframes auroraParallax {
-        0% { transform: translateY(0px) translateX(0px); opacity: 0.45; }
-        50% { transform: translateY(-18px) translateX(10px); opacity: 0.65; }
-        100% { transform: translateY(0px) translateX(0px); opacity: 0.45; }
+      /* Smooth continuous animations */
+      @keyframes float1 {
+        0% { 
+          transform: translate(0px, 0px) scale(1) rotate(0deg); 
+          opacity: 0.6; 
+        }
+        25% { 
+          transform: translate(30px, -20px) scale(1.1) rotate(90deg); 
+          opacity: 0.8; 
+        }
+        50% { 
+          transform: translate(60px, 10px) scale(0.9) rotate(180deg); 
+          opacity: 0.4; 
+        }
+        75% { 
+          transform: translate(20px, 40px) scale(1.05) rotate(270deg); 
+          opacity: 0.7; 
+        }
+        100% { 
+          transform: translate(-10px, -10px) scale(1) rotate(360deg); 
+          opacity: 0.6; 
+        }
       }
 
-      /* Respect user motion preferences */
+      @keyframes float2 {
+        0% { 
+          transform: translate(0px, 0px) scale(1) rotate(0deg); 
+          opacity: 0.5; 
+        }
+        33% { 
+          transform: translate(-25px, 30px) scale(1.15) rotate(120deg); 
+          opacity: 0.8; 
+        }
+        66% { 
+          transform: translate(35px, -25px) scale(0.85) rotate(240deg); 
+          opacity: 0.3; 
+        }
+        100% { 
+          transform: translate(10px, 15px) scale(1) rotate(360deg); 
+          opacity: 0.5; 
+        }
+      }
+
+      @keyframes float3 {
+        0% { 
+          transform: translate(0px, 0px) scale(1) rotate(0deg); 
+          opacity: 0.7; 
+        }
+        20% { 
+          transform: translate(40px, 20px) scale(1.2) rotate(72deg); 
+          opacity: 0.9; 
+        }
+        40% { 
+          transform: translate(-30px, 45px) scale(0.8) rotate(144deg); 
+          opacity: 0.4; 
+        }
+        60% { 
+          transform: translate(25px, -35px) scale(1.1) rotate(216deg); 
+          opacity: 0.6; 
+        }
+        80% { 
+          transform: translate(-15px, -20px) scale(0.95) rotate(288deg); 
+          opacity: 0.8; 
+        }
+        100% { 
+          transform: translate(5px, 10px) scale(1) rotate(360deg); 
+          opacity: 0.7; 
+        }
+      }
+
+      @keyframes particleFloat {
+        0% { 
+          transform: translate(0px, 0px) rotate(0deg); 
+          opacity: 0.8; 
+        }
+        25% { 
+          transform: translate(-10px, -15px) rotate(90deg); 
+          opacity: 1; 
+        }
+        50% { 
+          transform: translate(15px, 10px) rotate(180deg); 
+          opacity: 0.6; 
+        }
+        75% { 
+          transform: translate(-5px, 20px) rotate(270deg); 
+          opacity: 0.9; 
+        }
+        100% { 
+          transform: translate(0px, 0px) rotate(360deg); 
+          opacity: 0.8; 
+        }
+      }
+
+      @keyframes wavePattern {
+        0% { 
+          transform: translateY(0px) scale(1) rotate(0deg); 
+          opacity: 0.7; 
+        }
+        50% { 
+          transform: translateY(-30px) scale(1.05) rotate(180deg); 
+          opacity: 0.9; 
+        }
+        100% { 
+          transform: translateY(0px) scale(1) rotate(360deg); 
+          opacity: 0.7; 
+        }
+      }
+
+      /* Respect reduced motion preferences */
       @media (prefers-reduced-motion: reduce) {
-        .aurora-bg::after,
-        .aurora-orb,
-        .aurora-blob {
+        .dynamic-bg::before,
+        .dynamic-bg::after,
+        .floating-bubble {
           animation: none !important;
         }
       }
@@ -99,70 +180,107 @@ const AuroraBubblesBackground: React.FC = () => {
     };
   }, []);
 
-  // Config for floating blobs (sizes/positions/colors/durations)
-  const blobs = [
+  // Dynamic floating bubbles with different sizes, colors, and animations
+  const bubbles = [
     {
-      key: 'b1',
+      key: 'bubble1',
       style: {
-        top: '18%',
-        left: '12%',
-        width: '42vmin',
-        height: '42vmin',
-        background: 'radial-gradient(circle at 30% 30%, rgba(130,105,255,0.75), rgba(90,63,242,0.28) 60%, transparent 70%)',
-        animation: 'driftA 48s ease-in-out infinite',
+        top: '10%',
+        left: '15%',
+        width: '120px',
+        height: '120px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.4), rgba(167, 139, 250, 0.2) 70%, transparent 90%)',
+        animation: 'float1 15s ease-in-out infinite',
       } as React.CSSProperties,
     },
     {
-      key: 'b2',
+      key: 'bubble2',
       style: {
-        top: '56%',
-        left: '22%',
-        width: '28vmin',
-        height: '28vmin',
-        background: 'radial-gradient(circle at 30% 30%, rgba(91,63,245,0.75), rgba(67,46,218,0.28) 60%, transparent 70%)',
-        animation: 'driftB 62s ease-in-out infinite',
+        top: '60%',
+        left: '20%',
+        width: '80px',
+        height: '80px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(167, 139, 250, 0.35), rgba(196, 181, 253, 0.18) 70%, transparent 90%)',
+        animation: 'float2 18s ease-in-out infinite',
       } as React.CSSProperties,
     },
     {
-      key: 'b3',
+      key: 'bubble3',
       style: {
-        top: '42%',
-        right: '18%',
-        width: '46vmin',
-        height: '46vmin',
-        background: 'radial-gradient(circle at 30% 30%, rgba(173,140,255,0.7), rgba(116,86,255,0.26) 60%, transparent 72%)',
-        animation: 'driftC 54s ease-in-out infinite',
+        top: '30%',
+        right: '25%',
+        width: '100px',
+        height: '100px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(196, 181, 253, 0.4), rgba(221, 214, 254, 0.2) 70%, transparent 90%)',
+        animation: 'float3 12s ease-in-out infinite',
       } as React.CSSProperties,
     },
     {
-      key: 'b4',
+      key: 'bubble4',
       style: {
-        bottom: '12%',
-        right: '8%',
-        width: '26vmin',
-        height: '26vmin',
-        background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.24), rgba(160,140,255,0.18) 55%, transparent 70%)',
-        animation: 'driftA 70s ease-in-out infinite',
+        bottom: '20%',
+        right: '15%',
+        width: '90px',
+        height: '90px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.3), rgba(167, 139, 250, 0.15) 70%, transparent 90%)',
+        animation: 'float1 20s ease-in-out infinite',
+        animationDelay: '-5s',
       } as React.CSSProperties,
     },
     {
-      key: 'b5',
+      key: 'bubble5',
       style: {
-        top: '8%',
-        right: '32%',
-        width: '22vmin',
-        height: '22vmin',
-        background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), rgba(150,130,255,0.15) 55%, transparent 70%)',
-        animation: 'driftB 58s ease-in-out infinite',
+        top: '5%',
+        right: '10%',
+        width: '60px',
+        height: '60px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(221, 214, 254, 0.4), rgba(196, 181, 253, 0.2) 70%, transparent 90%)',
+        animation: 'float2 16s ease-in-out infinite',
+        animationDelay: '-8s',
+      } as React.CSSProperties,
+    },
+    {
+      key: 'bubble6',
+      style: {
+        bottom: '40%',
+        left: '10%',
+        width: '70px',
+        height: '70px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(167, 139, 250, 0.3), rgba(139, 92, 246, 0.15) 70%, transparent 90%)',
+        animation: 'float3 14s ease-in-out infinite',
+        animationDelay: '-3s',
+      } as React.CSSProperties,
+    },
+    {
+      key: 'bubble7',
+      style: {
+        top: '50%',
+        right: '50%',
+        width: '45px',
+        height: '45px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(196, 181, 253, 0.35), rgba(221, 214, 254, 0.18) 70%, transparent 90%)',
+        animation: 'float1 22s ease-in-out infinite',
+        animationDelay: '-10s',
+      } as React.CSSProperties,
+    },
+    {
+      key: 'bubble8',
+      style: {
+        top: '80%',
+        left: '60%',
+        width: '55px',
+        height: '55px',
+        background: 'radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.25), rgba(167, 139, 250, 0.12) 70%, transparent 90%)',
+        animation: 'float2 19s ease-in-out infinite',
+        animationDelay: '-7s',
       } as React.CSSProperties,
     },
   ];
 
   return (
-    <div className="aurora-bg">
-      <div className="aurora-orb" />
-      {blobs.map(b => (
-        <span key={b.key} className="aurora-blob" style={b.style} />
+    <div className="dynamic-bg">
+      {bubbles.map(bubble => (
+        <div key={bubble.key} className="floating-bubble" style={bubble.style} />
       ))}
     </div>
   );
