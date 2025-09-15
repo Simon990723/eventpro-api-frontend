@@ -34,10 +34,23 @@ const App: FC = () => {
     }, []);
 
     return (
-        <div className="animated-app">
+        <div className="animated-app" style={{
+            position: 'relative',
+            width: '100vw',
+            height: '100vh',
+            overflow: 'hidden',
+            margin: 0,
+            padding: 0
+        }}>
             <AnimatedBackground />
             <Navbar />
-            <main>
+            <main style={{
+                position: 'relative',
+                zIndex: 1,
+                width: '100%',
+                height: '100%',
+                overflow: 'auto'
+            }}>
                 <Routes>
                     <Route
                         path="/"
