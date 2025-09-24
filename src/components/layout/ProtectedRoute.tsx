@@ -1,11 +1,12 @@
 ﻿import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Oval } from 'react-loader-spinner';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
-    children,
-}) => {
+                                                                        children,
+                                                                    }) => {
     const { user, isLoading } = useAuth();
 
     if (isLoading) {
@@ -13,12 +14,15 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'center',
+                    flexDirection: 'column',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     height: '50vh',
+                    gap: '20px'
                 }}
             >
-                <Oval height={80} width={80} color="var(--primary-color)" />
+                <Skeleton height={50} width={200} />
+                <Skeleton count={2} width={300} />
             </div>
         );
     }
