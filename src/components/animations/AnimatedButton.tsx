@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { motion, type Variants, type HTMLMotionProps } from 'framer-motion';
+import React, { type ReactNode } from 'react';
 
-interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface AnimatedButtonProps extends HTMLMotionProps<"button"> {
     children: ReactNode;
     variant?: 'primary' | 'secondary' | 'danger' | 'ai';
     loading?: boolean;
@@ -9,16 +9,16 @@ interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     bounce?: boolean;
 }
 
-const AnimatedButton = ({ 
-    children, 
-    variant = 'primary',
-    loading = false,
-    pulse = false,
-    bounce = false,
-    className = '',
-    disabled,
-    ...props 
-}: AnimatedButtonProps) => {
+const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(({
+                            children,
+                            variant = 'primary',
+                            loading = false,
+                            pulse = false,
+                            bounce = false,
+                            className = '',
+                            disabled,
+                            ...props
+                        }, ref) => {
     const getVariantClass = () => {
         switch (variant) {
             case 'primary':
@@ -34,9 +34,9 @@ const AnimatedButton = ({
         }
     };
 
-    const buttonVariants = {
+    const combinedVariants: Variants = {
         initial: { scale: 1 },
-        hover: { 
+        hover: {
             scale: 1.05,
             y: -2,
             transition: {
@@ -44,17 +44,14 @@ const AnimatedButton = ({
                 ease: "easeOut"
             }
         },
-        tap: { 
+        tap: {
             scale: 0.95,
             y: 0,
             transition: {
                 duration: 0.1,
                 ease: "easeOut"
             }
-        }
-    };
-
-    const pulseVariants = {
+        },
         pulse: {
             scale: [1, 1.05, 1],
             transition: {
@@ -62,10 +59,7 @@ const AnimatedButton = ({
                 repeat: Infinity,
                 ease: "easeInOut"
             }
-        }
-    };
-
-    const bounceVariants = {
+        },
         bounce: {
             y: [0, -10, 0],
             transition: {
@@ -74,10 +68,7 @@ const AnimatedButton = ({
                 repeatDelay: 2,
                 ease: "easeOut"
             }
-        }
-    };
-
-    const loadingVariants = {
+        },
         loading: {
             rotate: 360,
             transition: {
@@ -92,23 +83,26 @@ const AnimatedButton = ({
 
     return (
         <motion.button
+            ref={ref}
             className={combinedClassName}
-            variants={buttonVariants}
+            variants={combinedVariants}
             initial="initial"
-            whileHover={!disabled && !loading ? "hover" : undefined}
-            whileTap={!disabled && !loading ? "tap" : undefined}
+            whileHover={!disabled && !loading && !pulse && !bounce ? "hover" : undefined}
+            whileTap={!disabled && !loading && !pulse && !bounce ? "tap" : undefined}
             animate={
-                loading ? "loading" : 
-                pulse ? "pulse" : 
-                bounce ? "bounce" : 
-                "initial"
+                loading ? "loading" :
+                    pulse ? "pulse" :
+                        bounce ? "bounce" :
+                            "initial"
             }
+            aria-busy={loading || undefined}
+            aria-disabled={disabled || loading || undefined}
             disabled={disabled || loading}
             {...props}
         >
             {loading ? (
                 <motion.div
-                    variants={loadingVariants}
+                    // No need to pass variants here again, it inherits from the parent
                     animate="loading"
                     style={{
                         width: '20px',
@@ -124,6 +118,8 @@ const AnimatedButton = ({
             )}
         </motion.button>
     );
-};
+});
+
+AnimatedButton.displayName = 'AnimatedButton';
 
 export default AnimatedButton;

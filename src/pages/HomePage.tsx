@@ -6,7 +6,7 @@
     type ChangeEvent,
     useRef,
 } from 'react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import '../styles/App.css';
 import EventForm from '../components/forms/EventForm';
 import EventList from '../components/ui/EventList';
@@ -27,7 +27,7 @@ interface NewEvent {
 
 const HomePage: FC = () => {
     const { user, isLoading: isAuthLoading } = useAuth();
-    const isCreator = user?.roles.includes('Creator');
+    const isCreator = !!user?.roles?.includes('Creator');
     const formSectionRef = useRef<HTMLDivElement>(null);
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +40,7 @@ const HomePage: FC = () => {
     const [editingEventId, setEditingEventId] = useState<number | null>(null);
     const [aiPrompt, setAiPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
-    const API_BASE_URL = import.meta.env.VITE_API_URL;
+    const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 
     const fetchEvents = async () => {
         if (!user || !user.token) {
@@ -288,7 +288,7 @@ const HomePage: FC = () => {
         );
     }
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -299,7 +299,7 @@ const HomePage: FC = () => {
         }
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,

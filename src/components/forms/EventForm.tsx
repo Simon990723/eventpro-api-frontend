@@ -1,5 +1,4 @@
 ﻿import { type FC, type FormEvent, type ChangeEvent } from 'react';
-import { Oval } from 'react-loader-spinner';
 
 interface EventFormProps {
     formData: {
@@ -52,13 +51,34 @@ const EventForm: FC<EventFormProps> = ({
                     className="button-ai"
                 >
                     {isGenerating ? (
-                        <Oval
-                            height={20}
-                            width={20}
-                            color="#ffffff"
-                            secondaryColor="#eeeeee"
-                            strokeWidth={4}
-                        />
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 50 50"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                        >
+                            <circle
+                                cx="25"
+                                cy="25"
+                                r="20"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                strokeLinecap="round"
+                                strokeDasharray="31.415 31.415"
+                            >
+                                <animateTransform
+                                    attributeName="transform"
+                                    type="rotate"
+                                    from="0 25 25"
+                                    to="360 25 25"
+                                    dur="0.8s"
+                                    repeatCount="indefinite"
+                                />
+                            </circle>
+                        </svg>
                     ) : (
                         'Generate with AI'
                     )}
