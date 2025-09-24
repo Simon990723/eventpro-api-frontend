@@ -1,7 +1,8 @@
 ﻿import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import type { Event } from '../types/Event';
-import { ThreeDots } from 'react-loader-spinner';
+import type { Event } from '../../types/Event';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 interface EventListProps {
     events: Event[];
@@ -13,30 +14,28 @@ interface EventListProps {
 }
 
 const EventList: FC<EventListProps> = ({
-    events,
-    loading,
-    error,
-    handleEditClick,
-    handleDeleteEvent,
-    isCreator,
-}) => {
+                                           events,
+                                           loading,
+                                           error,
+                                           handleEditClick,
+                                           handleDeleteEvent,
+                                           isCreator,
+                                       }) => {
     if (loading) {
         return (
             <div
                 style={{
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     padding: '50px',
+                    gap: '20px'
                 }}
             >
-                <ThreeDots
-                    height="80"
-                    width="80"
-                    radius="9"
-                    color="var(--paypal-blue)"
-                    ariaLabel="three-dots-loading"
-                    visible={true}
-                />
+                <Skeleton height={200} width={350} />
+                <Skeleton height={200} width={350} />
+                <Skeleton height={200} width={350} />
             </div>
         );
     }
