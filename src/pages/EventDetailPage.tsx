@@ -2,7 +2,8 @@
 import {useParams, useNavigate} from 'react-router-dom';
 import {useAuth} from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import {Oval} from 'react-loader-spinner';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import {jwtDecode} from 'jwt-decode';
 
 interface EventDetails {
@@ -171,13 +172,18 @@ const EventDetailPage: React.FC = () => {
             <div
                 style={{
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     padding: '50px',
+                    gap: '20px',
                 }}
             >
-                <Oval height={80} width={80} color="var(--paypal-blue)"/>
+                <Skeleton height={200} width={400} />
+                <Skeleton count={3} width={300} />
             </div>
         );
+
     if (!event) return <p>Event not found.</p>;
 
     const isEventCreator =
