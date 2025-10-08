@@ -15,6 +15,7 @@ import {
   GuestRoute,
   AnimatedBackground,
 } from './components';
+import useMediaQuery from './hooks/useMediaQuery';
 
 const App: FC = () => {
     useEffect(() => {
@@ -33,11 +34,18 @@ const App: FC = () => {
         };
     }, []);
 
+    const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+    const isMobileViewport = useMediaQuery('(max-width: 768px)');
+    const shouldRenderAnimatedBackground = !prefersReducedMotion && !isMobileViewport;
+    const appClassName = shouldRenderAnimatedBackground
+        ? 'animated-app'
+        : 'animated-app animated-app--lite';
+
     return (
-        <div className="animated-app">
-            <AnimatedBackground />
+        <div className={appClassName}>
+            {shouldRenderAnimatedBackground && <AnimatedBackground />}
             <Navbar />
-            <main>
+            <main className="app-main">
                 <Routes>
                     <Route
                         path="/"

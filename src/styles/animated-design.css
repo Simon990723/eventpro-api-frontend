@@ -82,10 +82,57 @@
 .animated-app {
     position: relative;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     overflow-x: hidden;
+    isolation: isolate;
     /* Ensure a visible ambient background even if animations are not running */
     background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #f1f5f9 100%);
     /* Avoid background-attachment: fixed to reduce repaint cost during scroll */
+}
+
+.animated-app > .dynamic-bg {
+    z-index: 0;
+}
+
+.animated-app > *:not(.dynamic-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+.animated-app--lite {
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.animated-app--lite::before,
+.animated-app--lite::after {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .animated-app {
+        background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .animated-app::before,
+    .animated-app::after,
+    .animated-app > .dynamic-bg {
+        display: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animated-app::before,
+    .animated-app::after {
+        animation: none !important;
+    }
+
+    .dynamic-bg::before,
+    .dynamic-bg::after,
+    .floating-bubble {
+        animation: none !important;
+    }
 }
 
 .animated-app::before {
